@@ -6,11 +6,13 @@
 let map;
 export default {
   mounted() {
-    map = new AMap.Map("container", {
-      zoom: 11, //级别
-      center: [113.551239, 22.251673], //中心点坐标
-      viewMode: "3D", //使用3D视图
-    });
+    map =
+      window.AMap &&
+      new window.AMap.Map("container", {
+        zoom: 11, //级别
+        center: [113.551239, 22.251673], //中心点坐标
+        viewMode: "3D", //使用3D视图
+      });
 
     // // 添加点标记
     // var marker = new AMap.Marker({

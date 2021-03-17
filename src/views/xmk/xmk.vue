@@ -24,89 +24,17 @@
       </a-tree>
     </div>
     <div class="project-content">
-      <a-table :columns="columns" :data-source="data" size="small">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-        <span slot="tags" slot-scope="tags">
-          <a-tag
-            v-for="tag in tags"
-            :key="tag"
-            :color="
-              tag === 'loser'
-                ? 'volcano'
-                : tag.length > 5
-                ? 'geekblue'
-                : 'green'
-            "
-          >
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <a>Invite 一 {{ record.name }}</a>
-          <a-divider type="vertical" />
-          <a>Delete</a>
-          <a-divider type="vertical" />
-          <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
-        </span>
-      </a-table>
-      <a-table :columns="columns" :data-source="data" size="small">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-        <span slot="tags" slot-scope="tags">
-          <a-tag
-            v-for="tag in tags"
-            :key="tag"
-            :color="
-              tag === 'loser'
-                ? 'volcano'
-                : tag.length > 5
-                ? 'geekblue'
-                : 'green'
-            "
-          >
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <a>Invite 一 {{ record.name }}</a>
-          <a-divider type="vertical" />
-          <a>Delete</a>
-          <a-divider type="vertical" />
-          <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
-        </span>
-      </a-table>
-      <a-table :columns="columns" :data-source="data" size="small">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-        <span slot="tags" slot-scope="tags">
-          <a-tag
-            v-for="tag in tags"
-            :key="tag"
-            :color="
-              tag === 'loser'
-                ? 'volcano'
-                : tag.length > 5
-                ? 'geekblue'
-                : 'green'
-            "
-          >
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <a>Invite 一 {{ record.name }}</a>
-          <a-divider type="vertical" />
-          <a>Delete</a>
-          <a-divider type="vertical" />
-          <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
-        </span>
-      </a-table>
+      <F />
+      <File />
+      <Form />
     </div>
   </div>
 </template>
 
 <script>
+import Form from "../../components/projectLibrary/form";
+import File from "../../components/projectLibrary/file";
+import F from "../../components/projectLibrary/first";
 const columns = [
   {
     dataIndex: "name",
@@ -161,6 +89,7 @@ const data = [
   },
 ];
 export default {
+  components: { Form, File, F },
   methods: {
     onSelect(selectedKeys, info) {
       console.log("selected", selectedKeys, info);
@@ -177,6 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  height: 100%;
   display: flex;
   .tree {
     width: 180px;
@@ -185,6 +115,15 @@ export default {
   .project-content {
     flex-grow: 1;
     padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    > div {
+      height: 32%;
+      overflow: auto;
+      &:not(:first) {
+        margin-top: 2%;
+      }
+    }
   }
 }
 </style>
