@@ -53,6 +53,11 @@ const routes = [
     name: 'fuck',
     path: "/flow/addOrEdit",
     component: () => import('../components/G6/G6AddOrEdit.vue')
+  },
+  {
+    name: 'ddd',
+    path: "/tjgc",
+    component: () => import('../views/tjgc/index.vue')
   }
 
 
