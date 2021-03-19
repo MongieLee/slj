@@ -58,7 +58,31 @@ const routes = [
     name: 'ddd',
     path: "/tjgc",
     component: () => import('../views/tjgc/index.vue')
+  }, {
+    path: '/tjgc/addOrEdit',
+    component: () => import('../views/tjgc/create.vue')
+  },
+  {
+    path: '/tjgc/edit',
+    component: () => import('../views/tjgc/edit.vue')
+  },
+  {
+    path: '/tjgc/detail',
+    component: () => import('../views/tjgc/detail.vue')
+  },
+  {
+    path: '/tjgc/detailSh',
+    component: () => import('../views/tjgc/detailSh.vue')
   }
+  , {
+    path: '/hzf',
+    component: () => import('../views/hzf/index.vue')
+  },
+  {
+    path: '/jdcx',
+    component: () => import('../views/jdcx/index.vue')
+  },
+
 
 
 ]

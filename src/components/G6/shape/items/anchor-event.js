@@ -19,7 +19,6 @@ export default (anchor, group, p) => {
 
   // 拖拽事件
   anchor.on('dragstart', e => {
-    console.log(e)
     if (anchorNodeId == null) {
       const { type, direction } = group.getFirst().attr();
       const diff = type === 'triangle-node' ? (direction === 'up' ? 1 : 0) : 0.5;
@@ -35,14 +34,14 @@ export default (anchor, group, p) => {
       // 添加线条
       const line = group.addShape('path', {
         attrs: {
-          stroke: '#1890FF',
+          stroke:   '#1890FF',
           lineDash: [5, 5],
-          path: [
+          path:     [
             ['M', ...point],
             ['L', ...point],
           ],
         },
-        className: 'dashed-line',
+        className:  'dashed-line',
         pointStart: point,
       });
 

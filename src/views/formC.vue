@@ -13,22 +13,22 @@
       @submit="handleSubmit"
     >
       <a-form-item label="预算单位编号">
-        <a-input disabled />
+        <a-input readOnly />
       </a-form-item>
       <a-form-item label="项目提报人">
-        <a-input disabled />
+        <a-input readOnly />
       </a-form-item>
       <a-form-item label="项目名称">
-        <a-input disabled />
+        <a-input readOnly />
       </a-form-item>
       <a-form-item label="经费项目编号">
-        <a-input disabled />
+        <a-input readOnly />
       </a-form-item>
       <a-form-item label="项目预算总额">
-        <a-input disabled />
+        <a-input readOnly />
       </a-form-item>
       <a-form-item label="立项理由论述">
-        <a-textarea disabled />
+        <a-textarea readOnly />
       </a-form-item>
     </a-form>
   </div>

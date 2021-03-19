@@ -26,9 +26,9 @@
             <a-icon type="profile" />
             <span>土建工程</span>
           </a-menu-item>
-          <a-menu-item key="gysk">
+          <a-menu-item key="hzf">
             <a-icon type="bank" />
-            <span>供应商库</span>
+            <span>合作方</span>
           </a-menu-item>
           <a-menu-item key="jdcx">
             <a-icon type="file-search" />

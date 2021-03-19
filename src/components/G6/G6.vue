@@ -77,7 +77,6 @@
 import G6 from "@antv/g6";
 import registerFactory from "./graph";
 import ItemPanel from "./ItemPanel.vue";
-import data from "./data.js";
 
 export default {
   name: "G6",

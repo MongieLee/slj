@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 10px 20px; height: 100%">
     <div class="form-title">
-      <span>流程管理</span>
+      <span>项目管理</span>
       <div class="button-group">
         <a-button @click="visible = !visible" type="primary">新增</a-button>
       </div>
@@ -11,6 +11,7 @@
         <div id="flowContainer"></div>
       </div>
       <a-table
+        :customRow="customRow"
         class="f1"
         size="small"
         bordered
@@ -18,17 +19,33 @@
         :columns="columns"
       >
         <template slot="operation" slot-scope="text, record">
+          <a-popconfirm
+            v-if="record.status === 0"
+            @confirm="() => jjj(record)"
+            title="确定提交审核吗？"
+          >
+            <a @click.stop style="margin-right: 1em" href="javascript:;"
+              >提审</a
+            >
+          </a-popconfirm>
+          <a
+            href="javascript:;"
+            v-if="record.status === 1"
+            @click.stop="$router.push('/tjgc/detailSh')"
+            style="margin-right: 1em"
+            >审核</a
+          >
           <a
             href="javascript:;"
             v-if="dataSource.length"
-            @click="() => showDetail(record)"
+            @click.stop="$router.push('/tjgc/detail')"
             style="margin-right: 1em"
             >查看</a
           >
           <a
             href="javascript:;"
-            v-if="dataSource.length"
-            @click="() => onEdit(record)"
+            v-if="record.status === 0"
+            @click.stop="() => onEdit(record)"
             style="margin-right: 1em"
             >编辑</a
           >
@@ -60,8 +77,17 @@
             wrapperCol: { span: 14 },
           }"
         >
-          <a-form-model-item label="流程名称" prop="name">
-            <a-input v-model="form.name" placeholder="请输入流程名称" />
+          <a-form-model-item label="项目名称" prop="title">
+            <a-input v-model="form.title" placeholder="请输入项目名称" />
+          </a-form-model-item>
+          <a-form-model-item label="项目简介" prop="description">
+            <a-input v-model="form.description" placeholder="请输入项目简介" />
+          </a-form-model-item>
+          <a-form-model-item type="number" label="经度" prop="longitude">
+            <a-input v-model="form.longitude" placeholder="请输入经度" />
+          </a-form-model-item>
+          <a-form-model-item type="number" label="纬度" prop="latitude">
+            <a-input v-model="form.latitude" placeholder="请输入纬度" />
           </a-form-model-item>
         </a-form-model>
       </form>
@@ -76,12 +102,48 @@ import G6 from "@antv/g6";
 console.log(data);
 export default {
   methods: {
+    customRow(record, index) {
+      return {
+        on: {
+          // 鼠标单击行
+          click: (event) => {
+            console.log(record.l);
+            data.nodes.map((i) => {
+              i.style.fill = "#ecf3ff";
+              if (i.label === record.l) {
+                if (record.status === 2) {
+                  i.style.fill = "#56d56f";
+                } else if (record.status === 3) {
+                  i.style.fill = "#ff7070";
+                } else {
+                  i.style.fill = "yellow";
+                }
+                console.log(i);
+                console.log(record);
+              }
+            });
+            this.graph.read(data); // 读取数据
+            this.graph.render();
+            this.graph.fitView();
+            event.currentTarget.parentNode
+              .querySelectorAll("tr")
+              .forEach((item) => {
+                item.style.background = "white";
+              });
+            event.currentTarget.style.background = "#e6f7ff";
+          },
+        },
+      };
+    },
+    jjj(e) {
+      console.log(e);
+    },
     showDetail() {
       this.$router.push("/lct/detail");
     },
     onEdit() {
       this.$router.push({
-        path: "/flow/addOrEdit",
+        path: "/tjgc/edit",
         query: { isEdit: 1 },
       });
     },
@@ -107,7 +169,7 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.$router.push({
-            path: "/flow/addOrEdit",
+            path: "/tjgc/addOrEdit",
             query: { name: this.form.name },
           });
         } else {
@@ -188,43 +250,87 @@ export default {
     return {
       currentEdit: null,
       rules: {
-        name: [
+        title: [
           {
             required: true,
-            message: "请输入流程名称",
+            message: "请输入名称",
+            trigger: "change",
+          },
+        ],
+        description: [
+          {
+            required: true,
+            message: "请输入简介",
+            trigger: "change",
+          },
+        ],
+        longitude: [
+          {
+            required: true,
+            message: "请输入经度",
+            trigger: "change",
+          },
+        ],
+        latitude: [
+          {
+            required: true,
+            message: "请输入纬度",
             trigger: "change",
           },
         ],
       },
       visible: false,
-      formTitle: "新增流程",
+      formTitle: "新增项目",
       form: {
         title: undefined,
+        description: undefined,
+        longitude: undefined,
+        latitude: undefined,
       },
       dataSource: [
         {
           key: 1,
           id: 1,
-          title: "A流程",
-          current: "流程中",
+          title: "XX项目",
+          current: "待提审",
+          description: "这是一个项目",
+          longitude: 116.397128,
+          latitude: 39.916527,
+          status: 0,
+          l: "项目立项论证",
         },
         {
           key: 2,
           id: 2,
-          title: "B流程",
-          current: "流程中",
+          title: "XX项目",
+          current: "待审",
+          description: "这是一个项目",
+          longitude: 116.397128,
+          latitude: 39.916527,
+          status: 1,
+          l: "招标采购",
         },
         {
           key: 3,
           id: 3,
-          title: "C流程",
-          current: "流程中",
+          title: "XX项目",
+          current: "通过",
+          description: "这是一个项目",
+          longitude: 116.397128,
+          latitude: 39.916527,
+          status: 2,
+          l: "合同签订",
         },
         {
           key: 4,
           id: 4,
-          title: "D流程",
-          current: "流程中",
+          title: "XX项目",
+          current: "不通过",
+          description: "这是一个项目",
+          longitude: 116.397128,
+          latitude: 39.916527,
+          status: 3,
+          l: "资料管理",
         },
       ],
       count: 2,
@@ -234,11 +340,23 @@ export default {
           dataIndex: "id",
         },
         {
-          title: "标题",
+          title: "项目名称",
           dataIndex: "title",
         },
         {
-          title: "当前流程",
+          title: "项目简介",
+          dataIndex: "description",
+        },
+        {
+          title: "经度",
+          dataIndex: "longitude",
+        },
+        {
+          title: "纬度",
+          dataIndex: "latitude",
+        },
+        {
+          title: "状态",
           dataIndex: "current",
         },
         {
