@@ -6,7 +6,12 @@
         <a-button @click="addFile" type="primary">新增</a-button>
       </div>
     </div>
-    <a-table size="small" bordered :data-source="dataSource" :columns="columns">
+    <a-table
+      size="small"
+      bordered
+      :data-source="dataSource"
+      :columns="columns"
+    >
       <template slot="operation" slot-scope="text, record">
         <a
           href="javascript:;"
@@ -144,19 +149,49 @@ export default {
           key: 1,
           id: 1,
           type: ".jpg",
-          name: "现场施工",
+          name: "实施意见",
         },
         {
           key: 2,
           id: 2,
-          type: ".ppt",
-          name: "项目汇报",
+          type: ".jpg",
+          name: "取用水方案",
         },
         {
           key: 3,
           id: 3,
           type: ".jpg",
-          name: "签到考勤",
+          name: "退水方案",
+        },
+        {
+          key: 4,
+          id: 4,
+          type: ".jpg",
+          name: "水资源利用分析",
+        },
+        {
+          key: 5,
+          id: 5,
+          type: ".jpg",
+          name: "可靠性分析",
+        },
+        {
+          key: 6,
+          id: 6,
+          type: ".jpg",
+          name: "可供水量分析",
+        },
+        {
+          key: 7,
+          id: 7,
+          type: ".jpg",
+          name: "取水分析",
+        },
+        {
+          key: 8,
+          id: 8,
+          type: ".jpg",
+          name: "退水分析",
         },
       ],
       count: 2,
@@ -164,13 +199,15 @@ export default {
         {
           title: "序号",
           dataIndex: "id",
+          width: "120px",
         },
         {
           title: "文件名",
           dataIndex: "name",
+          width: "440px",
         },
         {
-          title: "文件后缀",
+          title: "文件类型",
           dataIndex: "type",
         },
 

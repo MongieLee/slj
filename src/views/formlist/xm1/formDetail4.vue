@@ -1,34 +1,24 @@
 <template>
-  <div>
+  <div class="container">
     <a-page-header
       style="border: 1px solid rgb(235, 237, 240); margin-bottom: 2em"
-      title="项目立项论证审批表详情"
+      title="项目影响表详情"
       @back="$router.back()"
     />
-
     <a-form
       :form="form"
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
     >
-      <a-form-item label="预算单位编号">
-        <a-input readOnly />
+      <a-form-item label="取水影响">
+        <a-textarea placeholder="请输入取水影响" />
       </a-form-item>
-      <a-form-item label="项目提报人">
-        <a-input readOnly />
+      <a-form-item label="退水影响">
+        <a-textarea placeholder="请输入退水影响" />
       </a-form-item>
-      <a-form-item label="项目名称">
-        <a-input readOnly />
-      </a-form-item>
-      <a-form-item label="经费项目编号">
-        <a-input readOnly />
-      </a-form-item>
-      <a-form-item label="项目预算总额">
-        <a-input readOnly />
-      </a-form-item>
-      <a-form-item label="立项理由论述">
-        <a-textarea readOnly />
+      <a-form-item label="生态影响">
+        <a-textarea placeholder="请输入生态影响" />
       </a-form-item>
     </a-form>
   </div>
@@ -38,6 +28,36 @@
 export default {
   data() {
     return {
+      list: [
+        {
+          key: "1",
+          title: "项目立项论证",
+        },
+        {
+          key: "2",
+          title: "招标采购",
+        },
+        {
+          key: "3",
+          title: "合同签订",
+        },
+        {
+          key: "4",
+          title: "资料管理",
+        },
+        {
+          key: "5",
+          title: "现场管理",
+        },
+        {
+          key: "6",
+          title: "按权检查",
+        },
+        {
+          key: "7",
+          title: "整改验收",
+        },
+      ],
       formLayout: "horizontal",
       form: this.$form.createForm(this, { name: "coordinated" }),
     };
@@ -62,4 +82,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  height: 100%;
+  overflow: auto;
+}
 </style>

@@ -38,12 +38,13 @@
 <script>
 export default {
   methods: {
-    showDetail() {
-      this.$router.push("/formFactory/detail");
+    showDetail(a) {
+      console.log(a);
+      this.$router.push(`/formFactory/detail${a.key}`);
     },
-    onEdit() {
+    onEdit(a) {
       this.$router.push({
-        path: "/formFactory/addOrEdit",
+        path: `/formFactory/addOrEdit${a.key}`,
         query: { isEdit: 1 },
       });
     },
@@ -112,22 +113,22 @@ export default {
         {
           key: 1,
           id: 1,
-          title: "A表单模板",
+          title: "建设项目概况",
         },
         {
           key: 2,
           id: 2,
-          title: "B表单模板",
+          title: "开发利用分析",
         },
         {
           key: 3,
           id: 3,
-          title: "C表单模板",
+          title: "地表水源论证",
         },
         {
           key: 4,
           id: 4,
-          title: "D表单模板",
+          title: "项目影响",
         },
       ],
       count: 2,

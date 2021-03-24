@@ -79,9 +79,7 @@
                     v-for="(ele, index) in element.data"
                     :key="index"
                     :value="ele.value"
-                  >
-                    {{ ele.name }}
-                  </option>
+                  ></option>
                 </select>
               </div>
               <div v-else-if="element.name === 'textaera'">
@@ -156,6 +154,15 @@
               @input="titleChange($event)"
               :value="currentTag.added.element.title"
             />
+          </div>
+          <div
+            class="option-item"
+            v-if="currentTag.added.element.iconName === 'drop_down'"
+          >
+            <p>未知：</p>
+            <select x class="xxx" name="" id="">
+              <option value="合作方">合作方</option>
+            </select>
           </div>
           <div class="option-item" v-if="!currentTag.added.element.data">
             <p>占位符：</p>
@@ -277,6 +284,36 @@
 </template>
 
 <script>
+const componentData = [
+  {
+    id: "textaera7420.025094000879",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "取水影响",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287909791962",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "退水影响",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287909211962",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "生态影响",
+    mark: "",
+    placeholder: "",
+  },
+];
+
 import draggable from "vuedraggable";
 const originComponentList = () => [
   {
@@ -359,7 +396,7 @@ export default {
         ],
       },
       componentList: originComponentList(),
-      formFactory: [],
+      formFactory: componentData,
       currentTag: {
         added: {
           element: {},
@@ -367,7 +404,7 @@ export default {
         },
       },
       form: {
-        name: "",
+        name: "项目影响",
       },
       isEdit: false,
       isAdd: false,
@@ -380,18 +417,12 @@ export default {
     } else {
       this.isAdd = true;
     }
-    console.log(this.isEdit);
-    if (window.localStorage.getItem("a") && this.$route.query.isEdit === "1") {
-      const b = JSON.parse(window.localStorage.getItem("a"));
-      this.formFactory = b;
-      console.log(this.formFactory);
-      this.currentTag = {
-        added: {
-          element: b[0],
-          newIndex: 0,
-        },
-      };
-    }
+    this.currentTag = {
+      added: {
+        element: this.formFactory[0],
+        newIndex: 0,
+      },
+    };
   },
   props: ["hideHead"],
   methods: {
@@ -473,8 +504,7 @@ export default {
           }
         });
       }
-      window.localStorage.setItem("a", JSON.stringify(this.formFactory));
-      console.log(this.formFactory);
+      console.log(JSON.stringify(this.formFactory));
     },
     handelClick(ele, index) {
       this.currentTag = {
@@ -723,5 +753,13 @@ export default {
 }
 .mg-right {
   margin-right: 1em;
+}
+
+.xxx {
+  outline: none;
+  border-radius: 4px;
+  width: 100%;
+  height: 30px;
+  border: 1px solid #ccc;
 }
 </style>

@@ -1,0 +1,765 @@
+<template>
+  <div class="wrapper">
+    <a-page-header
+      v-if="!hideHead"
+      style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
+      title="项目立项论证审批表"
+      @back="$router.back()"
+    />
+    <form>
+      <a-form-model
+        :model="form"
+        :rules="rules"
+        ref="ruleForm"
+        v-bind="{
+          labelCol: { span: 2 },
+          wrapperCol: { span: 14 },
+        }"
+      >
+        <a-form-model-item label="项目名称" prop="name">
+          <a-input v-model="form.name" prop="name" placeholder="请输入文件名" />
+        </a-form-model-item>
+      </a-form-model>
+    </form>
+    <div class="container">
+      <div class="sider">
+        <p class="group-title" style="margin-top: 0.5em">
+          基础组件
+          <a-button v-if="isEdit || isAdd" @click="save" type="primary"
+            >保存</a-button
+          >
+        </p>
+        <draggable
+          class="draggableContainer"
+          :list="componentList"
+          :sort="false"
+          :group="{ name: 'people', pull: 'clone', put: false }"
+        >
+          <li
+            class="component-group-item"
+            v-for="element in componentList"
+            :key="element.name"
+          >
+            <span>
+              <svg class="icon" aria-hidden="true">
+                <use :xlink:href="`#icon-${element.iconName}`" />
+              </svg>
+            </span>
+            {{ element.describe }}
+          </li>
+        </draggable>
+      </div>
+
+      <div class="main">
+        <draggable
+          class="dragArea list-group"
+          @change="factoryChange"
+          :list="formFactory"
+          group="people"
+        >
+          <div
+            @click="handelClick(element, index)"
+            class="form-group-item"
+            v-for="(element, index) in formFactory"
+            :key="index"
+          >
+            <span>{{ element.title }}：</span>
+            <div class="item-wrapper">
+              <div v-if="element.name === 'input'">
+                <input
+                  :placeholder="element.placeholder"
+                  class="cp-input"
+                  type="text"
+                  readonly
+                />
+              </div>
+              <div v-else-if="element.name === 'dropdown'">
+                <select class="cp-select" disabled>
+                  <option
+                    v-for="(ele, index) in element.data"
+                    :key="index"
+                    :value="ele.value"
+                  ></option>
+                </select>
+              </div>
+              <div v-else-if="element.name === 'textaera'">
+                <textarea
+                  readonly
+                  class="cp-textaera"
+                  :placeholder="element.placeholder"
+                />
+              </div>
+              <div v-else-if="element.name === 'radio'">
+                <label
+                  class="mg-right"
+                  v-for="ele in element.data"
+                  :key="ele.id"
+                >
+                  <input
+                    disabled
+                    type="radio"
+                    :name="element.mark"
+                    :value="ele.value"
+                  />
+                  {{ ele.name }}</label
+                >
+              </div>
+              <div v-else-if="element.name === 'checkbox'">
+                <label
+                  class="mg-right"
+                  v-for="ele in element.data"
+                  :key="ele.id"
+                >
+                  <input
+                    disabled
+                    type="checkbox"
+                    :name="element.mark"
+                    :value="ele.value"
+                  />
+                  {{ ele.name }}</label
+                >
+              </div>
+            </div>
+
+            <div v-if="index === currentTag.added.newIndex" class="actions">
+              <div>
+                <svg
+                  class="icon"
+                  aria-hidden="true"
+                  @click="handelDelete(index)"
+                >
+                  <use xlink:href="#icon-delete"></use>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </draggable>
+      </div>
+
+      <div class="options">
+        <p class="group-title">字段属性</p>
+        <div v-if="currentTag.added.newIndex !== null">
+          <div class="option-item">
+            <p>字段标识：</p>
+            <input
+              class="cp-input"
+              @input="markChange($event)"
+              :value="currentTag.added.element.mark"
+            />
+          </div>
+          <div class="option-item">
+            <p>标题：</p>
+            <input
+              class="cp-input"
+              @input="titleChange($event)"
+              :value="currentTag.added.element.title"
+            />
+          </div>
+          <div
+            class="option-item"
+            v-if="currentTag.added.element.iconName === 'drop_down'"
+          >
+            <p>未知：</p>
+            <select x class="xxx" name="" id="">
+              <option value="合作方">合作方</option>
+            </select>
+          </div>
+          <div class="option-item" v-if="!currentTag.added.element.data">
+            <p>占位符：</p>
+            <input
+              class="cp-input"
+              @input="placeholderChange($event)"
+              :value="currentTag.added.element.placeholder"
+            />
+          </div>
+
+          <div
+            class="option-item"
+            v-if="currentTag.added.element.name === 'radio'"
+          >
+            <p>
+              单选数据
+              <button class="biz-btn" @click="addRadioItem">添加数据项</button>
+            </p>
+            <div class="cp-radio">
+              <label
+                v-for="(element, index) in currentTag.added.element.data"
+                :key="index"
+              >
+                <input
+                  type="radio"
+                  :name="currentTag.added.element.mark"
+                  :value="element.value"
+                />
+                <input
+                  class="cp-input"
+                  @input="radioChange($event, element, 'value')"
+                  :value="element.value"
+                />
+                <input
+                  class="cp-input"
+                  @input="radioChange($event, element, 'name')"
+                  :value="element.name"
+                />
+                <button class="biz-btn-danger" @click="remoteRadioItem(index)">
+                  X
+                </button>
+              </label>
+            </div>
+          </div>
+
+          <div
+            class="option-item"
+            v-if="currentTag.added.element.name === 'checkbox'"
+          >
+            <p>
+              多选数据
+              <button class="biz-btn" @click="addRadioItem">添加数据项</button>
+            </p>
+            <div class="cp-radio">
+              <label
+                v-for="(element, index) in currentTag.added.element.data"
+                :key="index"
+              >
+                <input
+                  type="checkbox"
+                  :name="currentTag.added.element.mark"
+                  :value="element.value"
+                />
+                <input
+                  class="cp-input"
+                  @input="radioChange($event, element, 'value')"
+                  :value="element.value"
+                />
+                <input
+                  class="cp-input"
+                  @input="radioChange($event, element, 'name')"
+                  :value="element.name"
+                />
+                <button class="biz-btn-danger" @click="remoteRadioItem(index)">
+                  X
+                </button>
+              </label>
+            </div>
+          </div>
+
+          <div
+            class="option-item"
+            v-if="currentTag.added.element.name === 'dropdown'"
+          >
+            <p>
+              下拉数据
+              <button class="biz-btn" @click="addRadioItem">添加数据项</button>
+            </p>
+            <div class="cp-radio">
+              <label
+                v-for="(element, index) in currentTag.added.element.data"
+                :key="index"
+              >
+                <input
+                  class="cp-input"
+                  @input="radioChange($event, element, 'value')"
+                  :value="element.value"
+                />
+                <input
+                  class="cp-input"
+                  @input="radioChange($event, element, 'name')"
+                  :value="element.name"
+                />
+                <button class="biz-btn-danger" @click="remoteRadioItem(index)">
+                  X
+                </button>
+              </label>
+            </div>
+          </div>
+        </div>
+        <template v-else>
+          <div class="option-nodata">暂未选择节点</div>
+        </template>
+      </div>
+      <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
+    <rawDisplayer class="col-3" :value="list2" title="List 2" /> -->
+    </div>
+  </div>
+</template>
+
+<script>
+const componentData = [
+  {
+    id: "textaera7420.025094000879",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "自然地理",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287909791962",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "气候特征",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287909211962",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "水资源情况",
+    mark: "",
+    placeholder: "",
+  },
+];
+
+import draggable from "vuedraggable";
+const originComponentList = () => [
+  {
+    id: `input_${Math.random() * 10000}`,
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "输入框",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: `textaera${Math.random() * 10000}`,
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "多行文本",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: `select${Math.random() * 10000}`,
+    describe: "下拉框",
+    name: "dropdown",
+    iconName: "drop_down",
+    title: "下拉框",
+    mark: "",
+    placeholder: "",
+    data: [
+      { name: "北京", value: 1, checked: false },
+      { name: "上海", value: 2, checked: false },
+      { name: "广州", value: 3, checked: false },
+    ],
+  },
+  {
+    id: `radio${Math.random() * 10000}`,
+    describe: "单选框",
+    name: "radio",
+    iconName: "danxuanti",
+    title: "单选",
+    mark: "default",
+    placeholder: "",
+    data: [
+      { name: "北京", value: 1, checked: false },
+      { name: "上海", value: 2, checked: false },
+      { name: "广州", value: 3, checked: false },
+    ],
+  },
+  {
+    id: `checkbox${Math.random() * 10000}`,
+    describe: "多选框",
+    name: "checkbox",
+    iconName: "check-box-outline",
+    title: "多选框",
+    mark: "default",
+    placeholder: "",
+    data: [
+      { name: "北京", value: 1, checked: false },
+      { name: "上海", value: 2, checked: false },
+      { name: "广州", value: 3, checked: false },
+    ],
+  },
+];
+export default {
+  name: "clone",
+  display: "Clone",
+  order: 2,
+  components: {
+    draggable,
+  },
+  data() {
+    return {
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "请输入项目名",
+            trigger: "change",
+          },
+        ],
+      },
+      componentList: originComponentList(),
+      formFactory: componentData,
+      currentTag: {
+        added: {
+          element: {},
+          newIndex: null,
+        },
+      },
+      form: {
+        name: "开发利用分析",
+      },
+      isEdit: false,
+      isAdd: false,
+    };
+  },
+  created() {
+    console.log(this.$route);
+    if (this.$route.query.isEdit === "1") {
+      this.isEdit = true;
+    } else {
+      this.isAdd = true;
+    }
+    this.currentTag = {
+      added: {
+        element: this.formFactory[0],
+        newIndex: 0,
+      },
+    };
+  },
+  props: ["hideHead"],
+  methods: {
+    radioChange(event, ele, key) {
+      ele[key] = event.target.value;
+    },
+    factoryChange(e) {
+      this.componentList = originComponentList(); // (this.currentTag = JSON.parse(JSON.stringify(e)));
+      if (e.moved) {
+        const temp = { added: { ...e.moved } };
+        this.currentTag = JSON.parse(JSON.stringify(temp));
+      } else {
+        this.currentTag = JSON.parse(JSON.stringify(e));
+      }
+    },
+    // changeOption(e, str) {
+    //   const data = "checked" in e.target ? e.target.checked : e.target.value;
+    //   console.log(data);
+    //   this.formFactory.forEach((element) => {
+    //     if (element.id === this.currentTag.added.element.id) {
+    //       element[str] = data;
+    //       this.currentTag.added.element[str] = data;
+    //     }
+    //   });
+    // },
+
+    markChange(e) {
+      this.formFactory.forEach((element) => {
+        if (element.id === this.currentTag.added.element.id) {
+          element.mark = e.target.value;
+          this.currentTag.added.element.mark = e.target.value;
+        }
+      });
+    },
+
+    placeholderChange(e) {
+      this.formFactory.forEach((element) => {
+        if (element.id === this.currentTag.added.element.id) {
+          element.placeholder = e.target.value;
+          this.currentTag.added.element.placeholder = e.target.value;
+        }
+      });
+    },
+
+    titleChange(e) {
+      this.formFactory.forEach((element) => {
+        if (element.id === this.currentTag.added.element.id) {
+          element.title = e.target.value;
+          this.currentTag.added.element.title = e.target.value;
+        }
+      });
+    },
+
+    remoteRadioItem(index) {
+      if (this.currentTag.added.element.data.length <= 1) {
+        this.$message.error("最少保留一项");
+        return;
+      }
+      this.currentTag.added.element.data.splice(index, 1);
+    },
+    addRadioItem() {
+      const data = this.currentTag.added.element.data;
+      data.push({ name: "未设名称", value: "未设值", checked: false });
+      this.$forceUpdate();
+    },
+    save() {
+      if (this.formFactory.length === 0) {
+        this.$message.error("表单项不能为空");
+        return;
+      }
+      if (this.isAdd || this.isEdit) {
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            this.$refs.ruleForm.resetFields();
+            this.$router.push("/xmk");
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      }
+      console.log(JSON.stringify(this.formFactory));
+    },
+    handelClick(ele, index) {
+      this.currentTag = {
+        added: {
+          element: ele,
+          newIndex: index,
+        },
+      };
+    },
+    handelDelete(index) {
+      // if (this.formFactory.length >= 1) this.currentTag = this.formFactory[0];
+      this.formFactory.splice(index, 1);
+      // if (this.formFactory.length >= 1) {
+      //   // this.currentTag = {
+      //   //   added: {
+      //   //     element: {},
+      //   //     newIndex: null,
+      //   //   },
+      //   // };
+      //   this.currentTag = {};
+      // }
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.wrapper {
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+}
+.container {
+  font-size: 12px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  .group-title {
+    font-size: 20px;
+  }
+  .draggableContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .component-group-item {
+      width: 48%;
+      display: flex;
+      background: #f4f6fc;
+      margin-bottom: 12px;
+      padding: 8px 10px;
+      &:hover {
+        cursor: grab;
+      }
+      span {
+        margin-right: 0.5em;
+      }
+      &.active {
+        border: 1px solid red;
+      }
+    }
+  }
+  .item-wrapper {
+    flex: 1;
+    input {
+      vertical-align: middle;
+      margin-top: -1px;
+      margin-bottom: 1px;
+    }
+  }
+}
+
+.main {
+  background: #fafafa;
+  flex: 1;
+  display: flex;
+  height: 100%;
+  overflow: auto;
+  .scroll-content {
+    width: 100%;
+    overflow: auto;
+    height: calc(100% - 40px);
+  }
+  .list-group {
+    height: 100%;
+    width: 100%;
+  }
+  .dragArea {
+    background: #fff;
+    flex: 1;
+    padding: 16px;
+    border: 1px dashed #aaa;
+    .form-group-item {
+      align-items: center;
+      padding: 0 16px;
+      position: relative;
+      display: flex;
+      min-height: 48px;
+      border: 1px solid #ccc;
+      &:not(:first-child) {
+        margin-top: 12px;
+      }
+      &:hover {
+        background: #ecf5ff;
+        cursor: pointer;
+      }
+      .actions {
+        border: 4px solid #409eff;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        &::before {
+          content: ""; /*:before和:after必带技能，重要性为满5颗星*/
+          display: block;
+          position: absolute; /*日常绝对定位*/
+          width: 0;
+          height: 0;
+          border: 6px solid #409eff;
+          left: 0;
+          top: 0px;
+        }
+        > div {
+          display: inline-flex;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          svg {
+            background: #409eff;
+            color: white;
+            height: 16px;
+            width: 16px;
+            padding: 2px;
+          }
+        }
+      }
+      span {
+        width: 120px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.sider {
+  padding: 0 8px 8px 8px;
+  width: 250px;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+
+.options {
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  width: 250px;
+  padding: 0 8px 8px 8px;
+  .option-item {
+    label {
+      display: flex;
+      align-items: center;
+    }
+    p {
+      margin: 4px;
+    }
+    border-bottom: 1px #ccc solid;
+    padding-bottom: 10px;
+  }
+}
+
+.biz-btn {
+  outline: none;
+  border: none;
+  padding: 6px 10px;
+  background: #1890ff;
+  color: white;
+  border-radius: 4px;
+  &:hover {
+    background: #40a9ff;
+    cursor: pointer;
+  }
+  &-danger {
+    outline: none;
+    border: none;
+    padding: 6px 10px;
+    color: white;
+    border-radius: 4px;
+    background: #ff4d4f;
+    &:hover {
+      background: #ff7875;
+      cursor: pointer;
+    }
+  }
+}
+
+.cp-input {
+  height: 32px;
+  line-height: 32px;
+  width: 100%;
+  padding: 0 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  &::placeholder {
+    color: #c0c4cc;
+  }
+}
+
+.cp-textaera {
+  margin: 5px 0;
+  resize: none;
+  height: 48px;
+  line-height: 32px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  &:hover {
+    cursor: pointer;
+  }
+  &::placeholder {
+    color: #c0c4cc;
+  }
+}
+
+.cp-select {
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 30px;
+  border-radius: 4px;
+}
+
+.cp-radio {
+  label {
+    vertical-align: text-bottom;
+    display: inline-flex;
+    align-items: center;
+    input {
+      margin: 0 8px;
+      vertical-align: middle;
+      margin-top: -1px;
+      margin-bottom: 1px;
+      &:not(:first-child) {
+        margin-top: 2px;
+      }
+    }
+  }
+}
+.mg-right {
+  margin-right: 1em;
+}
+
+.xxx {
+  outline: none;
+  border-radius: 4px;
+  width: 100%;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+</style>

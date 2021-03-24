@@ -7,7 +7,7 @@
       @options-changed="optionsUpdate"
       @dynamic-style-changed="styleUpdate"
     >
-      <gantt-header slot="header"></gantt-header>
+      <gantt-header :options="headerOptions" slot="header"></gantt-header>
     </gantt-elastic>
     <a-button style="margin-left: 2em" type="primary" @click="addTask"
       >Add task</a-button
@@ -41,7 +41,7 @@ function getDate(hours) {
 let tasks = [
   {
     id: 1,
-    label: "Make some noise",
+    label: "土建工程1",
     user:
       '<a href="https://www.google.com/search?q=John+Doe" target="_blank" style="color:#0077c0;">John Doe</a>',
     start: getDate(-24 * 5),
@@ -52,14 +52,13 @@ let tasks = [
   },
   {
     id: 2,
-    label: "With great power comes great responsibility",
+    label: "项目立项论证",
     user:
       '<a href="https://www.google.com/search?q=Peter+Parker" target="_blank" style="color:#0077c0;">Peter Parker</a>',
     parentId: 1,
     start: getDate(-24 * 4),
     duration: 4 * 24 * 60 * 60 * 1000,
     percent: 50,
-    type: "milestone",
     collapsed: true,
     style: {
       base: {
@@ -67,13 +66,14 @@ let tasks = [
         stroke: "#0EAC51",
       },
     },
+    type: "task",
   },
   {
     id: 3,
-    label: "Courage is being scared to death, but saddling up anyway.",
+    label: "招标采购",
     user:
       '<a href="https://www.google.com/search?q=John+Wayne" target="_blank" style="color:#0077c0;">John Wayne</a>',
-    parentId: 2,
+    parentId: 1,
     start: getDate(-24 * 3),
     duration: 2 * 24 * 60 * 60 * 1000,
     percent: 100,
@@ -81,43 +81,42 @@ let tasks = [
   },
   {
     id: 4,
-    label: "Put that toy AWAY!",
+    label: "合同签订",
     user:
       '<a href="https://www.google.com/search?q=Clark+Kent" target="_blank" style="color:#0077c0;">Clark Kent</a>',
     start: getDate(-24 * 2),
     duration: 2 * 24 * 60 * 60 * 1000,
     percent: 50,
-    type: "task",
+    parentId: 1,
     dependentOn: [3],
+    type: "task",
   },
   {
     id: 5,
-    label:
-      "One billion, gajillion, fafillion... shabadylu...mil...shabady......uh, Yen.",
+    label: "资料管理",
     user:
       '<a href="https://www.google.com/search?q=Austin+Powers" target="_blank" style="color:#0077c0;">Austin Powers</a>',
-    parentId: 4,
+    parentId: 1,
     start: getDate(0),
     duration: 2 * 24 * 60 * 60 * 1000,
     percent: 10,
-    type: "milestone",
     style: {
       base: {
         fill: "#0287D0",
         stroke: "#0077C0",
       },
     },
+    type: "task",
   },
   {
     id: 6,
-    label: "Butch Mario and the Luigi Kid",
+    label: "现场管理",
     user:
       '<a href="https://www.google.com/search?q=Mario+Bros" target="_blank" style="color:#0077c0;">Mario Bros</a>',
-    parentId: 5,
+    parentId: 1,
     start: getDate(24),
     duration: 1 * 24 * 60 * 60 * 1000,
     percent: 50,
-    type: "task",
     collapsed: true,
     style: {
       base: {
@@ -125,26 +124,27 @@ let tasks = [
         stroke: "#7E349D",
       },
     },
+    type: "task",
   },
   {
     id: 7,
-    label: "Devon, the old man wanted me, it was his dying request",
+    label: "安全检查",
     user:
       '<a href="https://www.google.com/search?q=Knight+Rider" target="_blank" style="color:#0077c0;">Knight Rider</a>',
-    parentId: 2,
+    parentId: 1,
     dependentOn: [6],
     start: getDate(24 * 2),
     duration: 4 * 60 * 60 * 1000,
     percent: 20,
-    type: "task",
     collapsed: true,
+    type: "task",
   },
   {
     id: 8,
-    label: "Hey, Baby! Anybody ever tell you I have beautiful eyes?",
+    label: "整改验收",
     user:
       '<a href="https://www.google.com/search?q=Johhny+Bravo" target="_blank" style="color:#0077c0;">Johhny Bravo</a>',
-    parentId: 7,
+    parentId: 1,
     dependentOn: [7],
     start: getDate(24 * 3),
     duration: 1 * 24 * 60 * 60 * 1000,
@@ -153,82 +153,20 @@ let tasks = [
   },
   {
     id: 9,
-    label:
-      "This better be important, woman. You are interrupting my very delicate calculations.",
+    label: "后评价",
     user:
       '<a href="https://www.google.com/search?q=Dexter\'s+Laboratory" target="_blank" style="color:#0077c0;">Dexter\'s Laboratory</a>',
-    parentId: 8,
+    parentId: 1,
     dependentOn: [8, 7],
     start: getDate(24 * 4),
     duration: 4 * 60 * 60 * 1000,
     percent: 20,
-    type: "task",
     style: {
       base: {
         fill: "#8E44AD",
         stroke: "#7E349D",
       },
     },
-  },
-  {
-    id: 10,
-    label: "current task",
-    user:
-      '<a href="https://www.google.com/search?q=Johnattan+Owens" target="_blank" style="color:#0077c0;">Johnattan Owens</a>',
-    start: getDate(24 * 5),
-    duration: 24 * 60 * 60 * 1000,
-    percent: 0,
-    type: "task",
-  },
-  {
-    id: 11,
-    label: "test task",
-    user:
-      '<a href="https://www.google.com/search?q=Johnattan+Owens" target="_blank" style="color:#0077c0;">Johnattan Owens</a>',
-    start: getDate(24 * 6),
-    duration: 24 * 60 * 60 * 1000,
-    percent: 0,
-    type: "task",
-  },
-  {
-    id: 12,
-    label: "test task",
-    user:
-      '<a href="https://www.google.com/search?q=Johnattan+Owens" target="_blank" style="color:#0077c0;">Johnattan Owens</a>',
-    start: getDate(24 * 7),
-    duration: 24 * 60 * 60 * 1000,
-    percent: 0,
-    type: "task",
-    parentId: 11,
-  },
-  {
-    id: 13,
-    label: "test task",
-    user:
-      '<a href="https://www.google.com/search?q=Johnattan+Owens" target="_blank" style="color:#0077c0;">Johnattan Owens</a>',
-    start: getDate(24 * 8),
-    duration: 24 * 60 * 60 * 1000,
-    percent: 0,
-    type: "task",
-  },
-  {
-    id: 14,
-    label: "test task",
-    user:
-      '<a href="https://www.google.com/search?q=Johnattan+Owens" target="_blank" style="color:#0077c0;">Johnattan Owens</a>',
-    start: getDate(24 * 9),
-    duration: 24 * 60 * 60 * 1000,
-    percent: 0,
-    type: "task",
-  },
-  {
-    id: 15,
-    label: "test task",
-    user:
-      '<a href="https://www.google.com/search?q=Johnattan+Owens" target="_blank" style="color:#0077c0;">Johnattan Owens</a>',
-    start: getDate(24 * 16),
-    duration: 24 * 60 * 60 * 1000,
-    percent: 0,
     type: "task",
   },
 ];
@@ -271,35 +209,32 @@ let options = {
       },
       {
         id: 2,
-        label: "Description",
+        label: "工程",
         value: "label",
         width: 200,
         expander: true,
         html: true,
         events: {
           click({ data, column }) {
+            console.log(data);
             console.log(column);
-            alert("description clicked!\n" + data.label);
+            // alert("description clicked!\n" + data.label);
           },
         },
       },
       {
         id: 3,
-        label: "Assigned to",
-        value: "user",
-        width: 130,
-        html: true,
-      },
-      {
-        id: 3,
-        label: "Start",
+        label: "开始时间",
         value: (task) => dayjs(task.start).format("YYYY-MM-DD"),
         width: 78,
       },
       {
         id: 4,
-        label: "Type",
-        value: "type",
+        label: "项目类型",
+        // value: "type",
+        value: (task) => {
+          return task.type === "project" ? "土建工程" : "";
+        },
         width: 68,
       },
       {
@@ -321,13 +256,47 @@ let options = {
     ],
   },
   locale: {
+    weekdays: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+    months: [
+      "一月",
+      "二月",
+      "三月",
+      "四月",
+      "五月",
+      "六月",
+      "七月",
+      "八月",
+      "九月",
+      "十月",
+      "十一月",
+      "十二月",
+    ],
     name: "en",
     Now: "Now",
-    "X-Scale": "Zoom-X",
-    "Y-Scale": "Zoom-Y",
-    "Task list width": "Task list",
+    "X-Scale": "XXX",
+    "Y-Scale": "dsfsdfds",
+    "Task list width": "1212",
     "Before/After": "Expand",
     "Display task list": "Task list",
+  },
+};
+let headerTitle = {
+  label: "项目进度甘特图",
+  html: false,
+};
+
+let headerOptions = {
+  title: {
+    label: "项目进度甘特图",
+    html: false,
+  },
+  locale: {
+    Now: "重置",
+    "X-Scale": "X轴",
+    "Y-Scale": "Y轴",
+    "Task list width": "工程列表",
+    "Before/After": "拓展",
+    "Display task list": "展示工程列表",
   },
 };
 export default {
@@ -338,7 +307,9 @@ export default {
   },
   data() {
     return {
+      headerTitle,
       tasks,
+      headerOptions,
       options,
       dynamicStyle: {},
       lastId: 16,

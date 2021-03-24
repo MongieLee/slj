@@ -9,6 +9,7 @@
     <div class="container">
       <div ref="fuck" class="flowWrapper">
         <div id="flowContainer"></div>
+        <div class="flow-mask"></div>
       </div>
       <a-table
         :customRow="customRow"
@@ -99,16 +100,15 @@
 import data from "../../components/G6/data";
 import registerFactory from "../../components/G6/graph";
 import G6 from "@antv/g6";
-console.log(data);
 export default {
   methods: {
-    customRow(record, index) {
+    customRow(record) {
       return {
         on: {
           // 鼠标单击行
           click: (event) => {
             console.log(record.l);
-            data.nodes.map((i) => {
+            this.flowData.nodes.map((i) => {
               i.style.fill = "#ecf3ff";
               if (i.label === record.l) {
                 if (record.status === 2) {
@@ -122,7 +122,7 @@ export default {
                 console.log(record);
               }
             });
-            this.graph.read(data); // 读取数据
+            this.graph.read(this.flowData); // 读取数据
             this.graph.render();
             this.graph.fitView();
             event.currentTarget.parentNode
@@ -242,12 +242,13 @@ export default {
     );
 
     this.graph = new G6.Graph(cfg);
-    this.graph.read(data); // 读取数据
+    this.graph.read(this.flowData); // 读取数据
     this.graph.render();
     this.graph.fitView();
   },
   data() {
     return {
+      flowData: data(),
       currentEdit: null,
       rules: {
         title: [
@@ -388,9 +389,17 @@ export default {
   display: flex;
   height: calc(100% - 44px);
   .flowWrapper {
+    position: relative;
     width: 400px;
     height: 100%;
     border-right: 1px solid #ccc;
+    .flow-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
   }
   .f1 {
     flex-grow: 1;

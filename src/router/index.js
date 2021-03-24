@@ -6,9 +6,14 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    component: () => import('../views/login/index.vue')
+  },
+  {
     path: '/',
     redirect: '/xmk'
   },
+
 
   {
     path: '/xmk',
@@ -20,18 +25,25 @@ const routes = [
     children: [
       {
         path: 'detail',
-        component: () => import('../views/formC.vue')
+        component: () => import('../views/formlist/xm1/formDetail.vue')
       }]
   },
+
   {
-    path: '/formFactory/detail',
-    name: 'jjj',
-    component: () => import('../views/formC.vue')
+    path: '/formFactory/addOrEdit1',
+    component: () => import('../components/formFactory/f1/f1.vue')
   },
   {
-    path: '/formFactory/addOrEdit',
-    name: 'xxx',
-    component: () => import('../components/formFactory/index.vue')
+    path: '/formFactory/addOrEdit2',
+    component: () => import('../components/formFactory/f1/f2.vue')
+  },
+  {
+    path: '/formFactory/addOrEdit3',
+    component: () => import('../components/formFactory/f1/f3.vue')
+  },
+  {
+    path: '/formFactory/addOrEdit4',
+    component: () => import('../components/formFactory/f1/f4.vue')
   },
   {
     path: '/gcjd',
@@ -83,6 +95,22 @@ const routes = [
     component: () => import('../views/jdcx/index.vue')
   },
 
+  {
+    path: '/formFactory/detail1',
+    component: () => import('../views/formlist/xm1/formDetail.vue')
+  },
+  {
+    path: '/formFactory/detail2',
+    component: () => import('../views/formlist/xm1/formDetail2.vue')
+  },
+  {
+    path: '/formFactory/detail3',
+    component: () => import('../views/formlist/xm1/formDetail3.vue')
+  },
+  {
+    path: '/formFactory/detail4',
+    component: () => import('../views/formlist/xm1/formDetail4.vue')
+  },
 
 
 ]
@@ -90,6 +118,17 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => { return record.meta.requiresAuth })) {
+//     store.dispatch('checkLogin').then(isLogin => {
+//       if (!isLogin) {
+//         next({ path: '/login', query: { redirect: to.fullPath } })
+//       } else { next() }
+//     })
+//   } else { next() }
+// })
+
 const VueRouterPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(to) {
   return VueRouterPush.call(this, to).catch(err => err)

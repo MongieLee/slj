@@ -32,7 +32,7 @@
           颜色: <colorPicker v-model="labelCfg.style.fill" />
         </div>
       </div>
-      <div v-if="node.shape === 'diamond-node'">
+      <div v-if="node.shape === 'rect-node'">
         <a-form-model
           ref="ruleForm"
           :label-col="{ span: 4 }"
@@ -69,8 +69,7 @@
 import G6 from "@antv/g6";
 import registerFactory from "./graph";
 import ItemPanel from "./ItemPanel.vue";
-import _data from "./data";
-const data = JSON.parse(JSON.stringify(_data));
+import getData from "./data";
 
 export default {
   name: "G6",
@@ -105,7 +104,7 @@ export default {
         borderColor: "",
         width: 160,
         height: 60,
-        shape: "rect-node",
+        shape: "",
       },
       nodeShapes: [
         {
@@ -161,7 +160,7 @@ export default {
       //通过this.graph.save()可获取当前数据
       // this.graph.data(this.graph.save());
       // this.graph.render();
-      
+
       alert("保存成功，控制台可查看流程图数据");
       this.$router.push("/lcgl");
       console.log("当前数据:");
@@ -199,6 +198,7 @@ export default {
 
       const cfg = registerFactory(G6, {
         // renderer: 'svg',
+        container: "canvasPanel",
         layout: {
           // type: "xxx", // 位置将固定
         },
@@ -255,7 +255,7 @@ export default {
 
       this.graph = new G6.Graph(cfg);
       if (this.$route.query.isEdit === "1") {
-        this.graph.read(data); // 读取数据
+        this.graph.read(getData()); // 读取数据
       }
       // this.graph.paint(); // 渲染到页面
       // this.graph.get('canvas').set('localRefresh', false); // 关闭局部渲染

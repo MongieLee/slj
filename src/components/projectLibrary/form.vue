@@ -96,21 +96,25 @@ export default {
           key: 1,
           id: 1,
           name: "陈六",
+          department: "信息科",
         },
         {
           key: 2,
           id: 2,
           name: "张琪",
+          department: "信息科",
         },
         {
           key: 3,
           id: 3,
-          name: "汪精卫",
+          name: "李四",
+          department: "信息科",
         },
         {
           key: 4,
           id: 4,
-          name: "毛人凤",
+          name: "王五",
+          department: "信息科",
         },
       ],
       count: 2,
@@ -122,6 +126,10 @@ export default {
         {
           title: "姓名",
           dataIndex: "name",
+        },
+        {
+          title: "部门",
+          dataIndex: "department",
         },
         {
           title: "操作",

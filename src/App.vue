@@ -22,10 +22,17 @@
             <a-icon type="apartment" />
             <span>流程管理</span>
           </a-menu-item>
-          <a-menu-item key="tjgc">
+          <!-- <a-menu-item key="tjgc">
             <a-icon type="profile" />
             <span>土建工程</span>
-          </a-menu-item>
+          </a-menu-item> -->
+          <a-sub-menu key="">
+            <span slot="title"
+              ><a-icon type="profile" /><span>项目管理</span></span
+            >
+            <a-menu-item key="tjgc">土建工程</a-menu-item>
+            <!-- <a-menu-item key="gcjs">工程建设</a-menu-item> -->
+          </a-sub-menu>
           <a-menu-item key="hzf">
             <a-icon type="bank" />
             <span>合作方</span>

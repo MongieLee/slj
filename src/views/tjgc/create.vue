@@ -159,7 +159,5 @@ export default {
   margin-top: 20px;
   border-top: 1px solid #ddd;
   padding: 20px 270px;
-  button {
-  }
 }
 </style>
