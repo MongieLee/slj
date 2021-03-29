@@ -96,19 +96,13 @@ export default {
         {
           key: 1,
           id: 1,
-          name: "岳志敏",
-          department: "技术信息部",
+          name: "张志勇",
+          department: "办公室",
         },
         {
           key: 2,
           id: 2,
-          name: "张亦天",
-          department: "办公室",
-        },
-        {
-          key: 3,
-          id: 3,
-          name: "陈辉",
+          name: "岳志明",
           department: "办公室",
         },
       ],

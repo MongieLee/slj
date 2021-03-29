@@ -3,7 +3,7 @@
     <a-page-header
       v-if="!hideHead"
       style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
-      title="项目立项论证审批表"
+      title="项目立项论证"
       @back="$router.back()"
     />
     <form>
@@ -578,7 +578,6 @@ export default {
 }
 
 .main {
-  background: #fafafa;
   flex: 1;
   display: flex;
   height: 100%;
@@ -597,6 +596,7 @@ export default {
     flex: 1;
     padding: 16px;
     border: 1px dashed #aaa;
+    border-bottom: none;
     .form-group-item {
       align-items: center;
       padding: 0 16px;

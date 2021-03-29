@@ -12,7 +12,7 @@
           theme="dark"
           @click="test"
           mode="inline"
-          :default-selected-keys="['1']"
+          :default-selected-keys="[hightLineKey]"
         >
           <a-menu-item key="xmk">
             <a-icon type="project" />
@@ -63,6 +63,9 @@
             minHeight: '280px',
           }"
         >
+          <!-- <keep-alive>
+            <router-view></router-view>
+          </keep-alive> -->
           <router-view></router-view>
         </a-layout-content>
       </a-layout>
@@ -74,6 +77,7 @@ import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
 export default {
   data() {
     return {
+      hightLineKey: "",
       collapsed: false,
       local: zhCN,
     };
@@ -82,6 +86,11 @@ export default {
     test(e) {
       this.$router.push(`/${e.key}`);
     },
+  },
+  created() {
+    const href = window.location.hash.replace("#/", "");
+    this.hightLineKey =
+      href.indexOf("/") === -1 ? href : href.substr(0, href.indexOf("/"));
   },
 };
 </script>

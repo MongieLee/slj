@@ -1,126 +1,47 @@
 <template>
   <div class="container">
     <div class="sider-tree">
-      <G6Demo />
+      <G6Demo :data="data" :hightLight="list[heihei - 1].title" />
     </div>
-    <a-tabs :tabBarStyle="{ marginBottom: 0 }" default-active-key="1">
-      <a-tab-pane v-for="i in list" :key="i.key" :tab="`${i.title}`">
-        <a-page-header
-          style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
-          title="查看项目"
-          @back="$router.back()"
-        />
-        <form>
-          <a-form-model
-            :model="form1"
-            v-show="currentI === 1"
-            :label-col="{ span: 5 }"
-            :wrapper-col="{ span: 12 }"
-          >
-            <h1 style="text-align: center">{{ form1.title }}</h1>
-            <a-form-model-item label="项目名称">
-              <a-input readOnly v-model="form1.a" />
-            </a-form-model-item>
-            <a-form-model-item label="项目性质">
-              <a-input readOnly v-model="form1.b" />
-            </a-form-model-item>
-            <a-form-model-item label="建设地点">
-              <a-textarea readOnly v-model="form1.c" />
-            </a-form-model-item>
-            <a-form-model-item label="占地面积">
-              <a-textarea readOnly v-model="form1.d" />
-            </a-form-model-item>
-            <a-form-model-item label="建设规模">
-              <a-textarea readOnly v-model="form1.e" />
-            </a-form-model-item>
-          </a-form-model>
-        </form>
-        <form>
-          <a-form-model
-            v-show="currentI === 2"
-            :form="form2"
-            :label-col="{ span: 5 }"
-            :wrapper-col="{ span: 12 }"
-          >
-            <h1 style="text-align: center">{{ form2.title }}</h1>
-            <a-form-model-item label="自然地理">
-              <a-textarea readOnly v-model="form2.a" />
-            </a-form-model-item>
-            <a-form-model-item label="气候特征">
-              <a-textarea readOnly v-model="form2.b" />
-            </a-form-model-item>
-            <a-form-model-item label="水资源情况">
-              <a-textarea readOnly v-model="form2.c" />
-            </a-form-model-item>
-          </a-form-model>
-        </form>
-        <form>
-          <a-form-model
-            v-show="currentI === 3"
-            :form="form3"
-            :label-col="{ span: 5 }"
-            :wrapper-col="{ span: 12 }"
-          >
-            <h1 style="text-align: center">{{ form3.title }}</h1>
-            <a-form-model-item label="来水量分析">
-              <a-textarea readOnly v-model="form3.a" />
-            </a-form-model-item>
-            <a-form-model-item label="用水量分析">
-              <a-textarea readOnly v-model="form3.b" />
-            </a-form-model-item>
-            <a-form-model-item label="水质量评价">
-              <a-textarea readOnly v-model="form3.c" />
-            </a-form-model-item>
-          </a-form-model>
-        </form>
-        <form>
-          <a-form-model
-            v-show="currentI === 4"
-            :form="form4"
-            :label-col="{ span: 5 }"
-            :wrapper-col="{ span: 12 }"
-          >
-            <h1 style="text-align: center">{{ form4.title }}</h1>
-            <a-form-model-item label="公司名称">
-              <a-textarea readOnly v-model="form4.a" />
-            </a-form-model-item>
-            <a-form-model-item label="证件是否齐全">
-              <a-textarea readOnly v-model="form4.b" />
-            </a-form-model-item>
-            <a-form-model-item label="经办人">
-              <a-textarea readOnly v-model="form4.c" />
-            </a-form-model-item>
-          </a-form-model>
-        </form>
-
-        <div class="button-group">
-          <a-button-group>
-            <a-button v-show="currentI !== 1" type="primary" @click="currentI--"
-              ><a-icon type="left" />上一步</a-button
-            >
-            <a-button v-show="currentI !== 4" type="primary" @click="currentI++"
-              >下一步<a-icon type="right" />
-            </a-button>
-          </a-button-group>
-        </div>
-        <div class="upload-container">
-          <p v-if="fileList.length === 0" style="margin-top: 20px">暂无文件</p>
-        </div>
-      </a-tab-pane>
-    </a-tabs>
-    <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
+    <div class="tabs-wrapper">
+      <a-tabs
+        @change="tabsChange"
+        :tabBarStyle="{ marginBottom: 0 }"
+        :default-active-key="heihei ? heihei : 1"
+      >
+        <a-tab-pane v-for="i in list" :key="i.key" :tab="`${i.title}`">
+          <!-- <router-view></router-view> -->
+        </a-tab-pane>
+      </a-tabs>
+      <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
     <rawDisplayer class="col-3" :value="list2" title="List 2" /> -->
+      <a-page-header
+        style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
+        title="查看项目"
+        @back="$router.push('/tjgc')"
+      />
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import G6Demo from "../../components/G6/Demo.vue";
+// import G6Demo from "../../components/G6/Demo.vue";
+import G6Demo from "../../components/G6/Demo2.vue";
+import getData from "../../components/G6/data";
+
 export default {
   components: { G6Demo },
   name: "G6StaticDemo",
   order: 2,
+  created() {
+    console.log(this.$route.path.substr(this.$route.path.length - 1, 1));
+    this.heihei = this.$route.path.substr(this.$route.path.length - 1, 1);
+  },
   data() {
     return {
+      data: getData(),
+      heihei: null,
       list: [
         {
           key: "1",
@@ -174,9 +95,11 @@ export default {
       },
       form3: {
         title: "地表水源论证表",
-        a: "降水主要集中在4-8月，占全年降水总量的74.8%。地表水资源量19.88亿立方米，地下水资源量2.39亿立方米，水资源总量20.41亿立方米，人均水资源量1009立方米。",
+        a:
+          "降水主要集中在4-8月，占全年降水总量的74.8%。地表水资源量19.88亿立方米，地下水资源量2.39亿立方米，水资源总量20.41亿立方米，人均水资源量1009立方米。",
         b: "人均综合用水量294立方米",
-        c: "水质情况较好，汛期，非汛期，全年皆到《地表水环境质量标准》（GB3838-2019）III类水标准",
+        c:
+          "水质情况较好，汛期，非汛期，全年皆到《地表水环境质量标准》（GB3838-2019）III类水标准",
       },
       form4: {
         title: "项目影响表",
@@ -191,6 +114,11 @@ export default {
   },
   methods: {
     handleSubmit() {},
+    tabsChange(e) {
+      console.log(e);
+      this.heihei = e;
+      this.$router.push(`/tjgc/detail/${e}`);
+    },
   },
 };
 </script>
@@ -203,9 +131,16 @@ export default {
     width: 380px;
     height: 100%;
   }
-  .ant-tabs.ant-tabs-top.ant-tabs-line {
+  .tabs-wrapper {
     flex-grow: 1;
+    height: 100%;
+    overflow: auto;
   }
+  /* .ant-tabs.ant-tabs-top.ant-tabs-line {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  } */
   .button-group {
     display: flex;
     justify-content: center;
@@ -217,4 +152,7 @@ export default {
     padding: 20px 270px;
   }
 }
+/* .ant-tabs-content {
+  border: 1px solid red !important;
+} */
 </style>

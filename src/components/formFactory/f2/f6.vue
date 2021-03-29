@@ -3,7 +3,7 @@
     <a-page-header
       v-if="!hideHead"
       style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
-      title="项目立项论证"
+      title="招标采购"
       @back="$router.back()"
     />
     <form>
@@ -286,11 +286,11 @@
 <script>
 const componentData = [
   {
-    id: "textaera7420.025094000879",
-    describe: "多行文本",
-    name: "textaera",
-    iconName: "textarea",
-    title: "自然地理",
+    id: "input7420.025094000879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "招标编号",
     mark: "",
     placeholder: "",
   },
@@ -299,16 +299,142 @@ const componentData = [
     describe: "多行文本",
     name: "textaera",
     iconName: "textarea",
-    title: "气候特征",
+    title: "项目名称",
     mark: "",
     placeholder: "",
   },
   {
-    id: "textaera4703.287909211962",
+    id: "input7420.03232340879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "预算金额",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input7420.03232340879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "数量",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287909791962",
     describe: "多行文本",
     name: "textaera",
     iconName: "textarea",
-    title: "水资源情况",
+    title: "最高投标限价",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input7420.8789789789",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "投标保证金",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input7420.874545349789",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "资金来源及到位情况",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287323112",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "购买招标文件时间",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.234211112312",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "购买招标文件地点",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input7420.8723239789",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "网上报名时间",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera42303.282323112",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "投标截止时间",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera42303.2827883112",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "开标时间",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input4320.87219789",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "联系人",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera42303.21477783112",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "联系地址",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input4320.87777789",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "招标人",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input4320.4545645645",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "联系电话",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input4320.34352523",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "传真",
     mark: "",
     placeholder: "",
   },
@@ -404,7 +530,7 @@ export default {
         },
       },
       form: {
-        name: "开发利用分析",
+        name: "项目影响",
       },
       isEdit: false,
       isAdd: false,
@@ -542,6 +668,7 @@ export default {
   font-size: 12px;
   height: 100%;
   width: 100%;
+  overflow: hidden;
   display: flex;
   .group-title {
     font-size: 20px;

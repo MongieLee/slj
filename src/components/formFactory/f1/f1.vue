@@ -3,7 +3,7 @@
     <a-page-header
       v-if="!hideHead"
       style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
-      title="项目立项论证审批表"
+      title="项目立项论证"
       @back="$router.back()"
     />
     <form>
@@ -303,9 +303,9 @@ const componentData = [
     mark: "",
     placeholder: "",
     data: [
-      { name: "北京", value: 1, checked: false },
-      { name: "上海", value: 2, checked: false },
-      { name: "广州", value: 3, checked: false },
+      { name: "新建", value: 1, checked: false },
+      { name: "重建", value: 2, checked: false },
+      { name: "修复", value: 3, checked: false },
     ],
   },
   {
@@ -601,7 +601,6 @@ export default {
 }
 
 .main {
-  background: #fafafa;
   flex: 1;
   display: flex;
   height: 100%;
@@ -620,6 +619,7 @@ export default {
     flex: 1;
     padding: 16px;
     border: 1px dashed #aaa;
+    border-bottom: none;
     .form-group-item {
       align-items: center;
       padding: 0 16px;

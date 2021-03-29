@@ -2,7 +2,7 @@
   <div class="root">
     <a-page-header
       style="border: 1px solid rgb(235, 237, 240)"
-      title="A流程详情"
+      title="土建工程流程详情"
       @back="$router.back()"
     />
     <div class="canvasContainer">
@@ -83,8 +83,7 @@
 <script>
 import G6 from "@antv/g6";
 import registerFactory from "./graph";
-import _data from "./data.js";
-const data = JSON.parse(JSON.stringify(_data));
+import getData from "./data.js";
 
 export default {
   name: "G6",
@@ -268,7 +267,7 @@ export default {
       });
 
       this.graph = new G6.Graph(cfg);
-      this.graph.read(data); // 读取数据
+      this.graph.read(getData()); // 读取数据
       // this.graph.render();
       // this.graph.paint(); // 渲染到页面
       // this.graph.get('canvas').set('localRefresh', false); // 关闭局部渲染
@@ -331,7 +330,8 @@ export default {
         //点击空白画布也会触发此事件，只有Node对象才会带有item
         this.configVisible = !!e;
         if (e && e.item) {
-          console.log(e);
+          console.log(`e.item`);
+          console.log(e.item);
           this.tempItem = e;
           const model = e.item.get("model");
           console.log(model);
@@ -365,6 +365,8 @@ export default {
         this.configVisible = !!e;
 
         if (e && e.item) {
+          console.log(`e.item`);
+          console.log(e.item);
           this.config = e.item.get("model").id;
 
           this.graph.updateItem(e.item, {

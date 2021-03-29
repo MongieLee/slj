@@ -3,7 +3,7 @@
     <a-page-header
       v-if="!hideHead"
       style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
-      title="项目立项论证"
+      title="合同签订"
       @back="$router.back()"
     />
     <form>
@@ -286,29 +286,92 @@
 <script>
 const componentData = [
   {
-    id: "textaera7420.025094000879",
-    describe: "多行文本",
-    name: "textaera",
-    iconName: "textarea",
-    title: "自然地理",
+    id: "input7420.025094000879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "甲方",
     mark: "",
     placeholder: "",
   },
   {
-    id: "textaera4703.287909791962",
-    describe: "多行文本",
-    name: "textaera",
-    iconName: "textarea",
-    title: "气候特征",
+    id: "input7420.0250233879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "乙方",
     mark: "",
     placeholder: "",
   },
   {
-    id: "textaera4703.287909211962",
+    id: "input7420.02502340879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "工程名称",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input7420.03232340879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "工程地点",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "input7420.0323223240879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "采购日期",
+    mark: "",
+    placeholder: "",
+  },
+   {
+    id: "input7232320.032233223240879",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "采购数量",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.287323112",
     describe: "多行文本",
     name: "textaera",
     iconName: "textarea",
-    title: "水资源情况",
+    title: "每平方工程包价",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera4703.234211112312",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "付款方式",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera42203.282232112",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "甲方责任",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "textaera42303.282323112",
+    describe: "多行文本",
+    name: "textaera",
+    iconName: "textarea",
+    title: "乙方责任",
     mark: "",
     placeholder: "",
   },
@@ -404,7 +467,7 @@ export default {
         },
       },
       form: {
-        name: "开发利用分析",
+        name: "珠海供排水管网有限公司针对臭氧催化剂采购项目",
       },
       isEdit: false,
       isAdd: false,
@@ -542,6 +605,7 @@ export default {
   font-size: 12px;
   height: 100%;
   width: 100%;
+  overflow: hidden;
   display: flex;
   .group-title {
     font-size: 20px;

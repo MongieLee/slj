@@ -286,11 +286,34 @@
 <script>
 const componentData = [
   {
+    id: "input_1877.869999649755",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "项目名称",
+    mark: "",
+    placeholder: "",
+  },
+  {
+    id: "select5162.501354960016",
+    describe: "下拉框",
+    name: "dropdown",
+    iconName: "drop_down",
+    title: "项目性质",
+    mark: "",
+    placeholder: "",
+    data: [
+      { name: "新建", value: 1, checked: false },
+      { name: "重建", value: 2, checked: false },
+      { name: "修复", value: 3, checked: false },
+    ],
+  },
+  {
     id: "textaera7420.025094000879",
     describe: "多行文本",
     name: "textaera",
     iconName: "textarea",
-    title: "自然地理",
+    title: "建设地点",
     mark: "",
     placeholder: "",
   },
@@ -299,16 +322,16 @@ const componentData = [
     describe: "多行文本",
     name: "textaera",
     iconName: "textarea",
-    title: "气候特征",
+    title: "占地面积",
     mark: "",
     placeholder: "",
   },
   {
-    id: "textaera4703.287909211962",
-    describe: "多行文本",
-    name: "textaera",
-    iconName: "textarea",
-    title: "水资源情况",
+    id: "input_6899.469927714245",
+    describe: "输入框",
+    name: "input",
+    iconName: "input",
+    title: "建设规模",
     mark: "",
     placeholder: "",
   },
@@ -396,7 +419,7 @@ export default {
         ],
       },
       componentList: originComponentList(),
-      formFactory: componentData,
+      formFactory: [],
       currentTag: {
         added: {
           element: {},
@@ -404,7 +427,7 @@ export default {
         },
       },
       form: {
-        name: "开发利用分析",
+        name: "",
       },
       isEdit: false,
       isAdd: false,
@@ -417,12 +440,12 @@ export default {
     } else {
       this.isAdd = true;
     }
-    this.currentTag = {
-      added: {
-        element: this.formFactory[0],
-        newIndex: 0,
-      },
-    };
+    // this.currentTag = {
+    //   added: {
+    //     element: this.formFactory[0],
+    //     newIndex: 0,
+    //   },
+    // };
   },
   props: ["hideHead"],
   methods: {

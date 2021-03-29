@@ -6,12 +6,7 @@
         <a-button @click="addFile" type="primary">新增</a-button>
       </div>
     </div>
-    <a-table
-      size="small"
-      bordered
-      :data-source="dataSource"
-      :columns="columns"
-    >
+    <a-table size="small" bordered :data-source="dataSource" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a
           href="javascript:;"
@@ -148,50 +143,16 @@ export default {
         {
           key: 1,
           id: 1,
-          type: "jpg",
-          name: "实施意见",
+          type: "pdf",
+
+          name: "混泥土采购项目招标文件",
         },
         {
           key: 2,
-          id: 2,
-          type: "jpg",
-          name: "取用水方案",
-        },
-        {
-          key: 3,
           id: 3,
-          type: "jpg",
-          name: "退水方案",
-        },
-        {
-          key: 4,
-          id: 4,
-          type: "jpg",
-          name: "水资源利用分析",
-        },
-        {
-          key: 5,
-          id: 5,
-          type: "jpg",
-          name: "可靠性分析",
-        },
-        {
-          key: 6,
-          id: 6,
-          type: "jpg",
-          name: "可供水量分析",
-        },
-        {
-          key: 7,
-          id: 7,
-          type: "jpg",
-          name: "取水分析",
-        },
-        {
-          key: 8,
-          id: 8,
-          type: "jpg",
-          name: "退水分析",
+          type: "pdf",
+
+          name: "臭氧催化剂采购项目招标文件",
         },
       ],
       count: 2,

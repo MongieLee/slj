@@ -1,9 +1,9 @@
 <template>
-  <div style="padding: 10px 20px">
+  <div>
     <div class="form-title">
-      <span>流程管理</span>
+      <span>项目模板</span>
       <div class="button-group">
-        <a-button @click="visible = !visible" type="primary">新增</a-button>
+        <a-button @click="addFile" type="primary">新增</a-button>
       </div>
     </div>
     <a-table size="small" bordered :data-source="dataSource" :columns="columns">
@@ -32,41 +32,19 @@
         </a-popconfirm>
       </template>
     </a-table>
-    <a-modal
-      :title="formTitle"
-      :visible="visible"
-      @ok="onSubmit"
-      :okText="'下一步'"
-      @cancel="handleCancel"
-    >
-      <form>
-        <a-form-model
-          :model="form"
-          :rules="rules"
-          ref="ruleForm"
-          v-bind="{
-            labelCol: { span: 4 },
-            wrapperCol: { span: 14 },
-          }"
-        >
-          <a-form-model-item label="流程名称" prop="name">
-            <a-input v-model="form.name" placeholder="请输入流程名称" />
-          </a-form-model-item>
-        </a-form-model>
-      </form>
-    </a-modal>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    showDetail() {
-      this.$router.push("/lct/detail");
+    showDetail(a) {
+      console.log(a);
+      this.$router.push(`/formFactory/detail${a.key}`);
     },
-    onEdit() {
+    onEdit(a) {
       this.$router.push({
-        path: "/flow/addOrEdit",
+        path: `/formFactory/addOrEdit${a.key}`,
         query: { isEdit: 1 },
       });
     },
@@ -74,9 +52,9 @@ export default {
     // this.formTitle = "编辑文件";
     // this.visible = !this.visible;
     // this.form = { name: item.name, type: item.type };
-    addFlow() {
+    addFile() {
       this.$router.push({
-        path: "/flow/addOrEdit",
+        path: "/formFactory/addOrEdit",
         query: { isEdit: 0 },
       });
     },
@@ -91,10 +69,22 @@ export default {
     onSubmit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.$router.push({
-            path: "/flow/addOrEdit",
-            query: { name: this.form.name },
-          });
+          if (this.currentEdit) {
+            this.visible = false;
+            this.dataSource[this.dataSource.indexOf(this.currentEdit)] = {
+              ...this.dataSource.indexOf(this.currentEdit),
+              title: this.form.title,
+            };
+            this.currentEdit = null;
+          } else {
+            this.visible = false;
+            this.dataSource.push({
+              id: this.dataSource.length + 1,
+              key: this.dataSource.length + 1,
+              title: this.form.title,
+            });
+          }
+          this.$refs.ruleForm.resetFields();
         } else {
           console.log("error submit!!");
           return false;
@@ -106,24 +96,29 @@ export default {
     return {
       currentEdit: null,
       rules: {
-        name: [
+        title: [
           {
             required: true,
-            message: "请输入流程名称",
+            message: "请输入项目名称",
             trigger: "change",
           },
         ],
       },
       visible: false,
-      formTitle: "新增流程",
+      formTitle: "新增审批人",
       form: {
         title: undefined,
       },
       dataSource: [
         {
-          key: 1,
+          key: 7,
           id: 1,
-          title: "土建工程",
+          title: "混泥土采购项目",
+        },
+        {
+          key: 8,
+          id: 2,
+          title: "臭氧催化剂采购项目",
         },
       ],
       count: 2,

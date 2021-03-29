@@ -148,51 +148,39 @@ export default {
         {
           key: 1,
           id: 1,
-          type: "jpg",
-          name: "实施意见",
+          type: "pdf",
+          name: "珠海供排水管网有限公司针对供水工程项目混凝土材料采购项目合同书",
         },
         {
           key: 2,
           id: 2,
           type: "jpg",
-          name: "取用水方案",
+          name: "混泥土采购甲方签字",
         },
         {
           key: 3,
           id: 3,
           type: "jpg",
-          name: "退水方案",
+          name: "混泥土采购乙方签字",
         },
         {
           key: 4,
           id: 4,
-          type: "jpg",
-          name: "水资源利用分析",
+          type: "pdf",
+          name: "珠海供排水管网有限公司针对臭氧催化剂采购项目合同书",
         },
         {
           key: 5,
           id: 5,
           type: "jpg",
-          name: "可靠性分析",
+          name: "臭氧催化剂采购甲方签字",
         },
         {
           key: 6,
           id: 6,
           type: "jpg",
-          name: "可供水量分析",
-        },
-        {
-          key: 7,
-          id: 7,
-          type: "jpg",
-          name: "取水分析",
-        },
-        {
-          key: 8,
-          id: 8,
-          type: "jpg",
-          name: "退水分析",
-        },
+          name: "臭氧催化剂采购乙方签字",
+        }
       ],
       count: 2,
       columns: [
@@ -204,7 +192,6 @@ export default {
         {
           title: "文件名",
           dataIndex: "name",
-          width: "440px",
         },
         {
           title: "文件类型",

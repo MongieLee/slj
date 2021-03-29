@@ -32,7 +32,7 @@
           颜色: <colorPicker v-model="labelCfg.style.fill" />
         </div>
       </div>
-      <div v-if="node.shape === 'rect-node'">
+      <div v-if="node.shape === 'rect-node' && config.data">
         <a-form-model
           ref="ruleForm"
           :label-col="{ span: 4 }"
@@ -146,14 +146,11 @@ export default {
     });
   },
   destroyed() {
-    this.graph.data({ node: [], edges: [], combos: [] });
-    this.graph.render();
-    this.graph.clear();
+    // this.graph.data({ node: [], edges: [], combos: [] });
+    // this.graph.render();
+    // this.graph.clear();
     this.graph.destroy();
-
-    this.graph = {};
-    console.log("怎么没销毁");
-    console.log(this.graph);
+    // this.graph = {};
   },
   methods: {
     saveData() {
@@ -161,26 +158,26 @@ export default {
       // this.graph.data(this.graph.save());
       // this.graph.render();
 
-      alert("保存成功，控制台可查看流程图数据");
+      // alert("保存成功，控制台可查看流程图数据");
       this.$router.push("/lcgl");
       console.log("当前数据:");
+      console.log(JSON.stringify(this.graph.save()));
       console.log("----------------------------");
     },
     createGraphic() {
       const vm = this;
       const menu = new G6.Menu({
         //右键菜单属性事件
-        offsetX: -20,
-        offsetY: -50,
-        itemTypes: ["node"],
+        offsetX: 0,
+        offsetY: 0,
+        itemTypes: ["node", "edge"],
         getContent(e) {
           console.log(e);
           const outDiv = document.createElement("div");
-
           outDiv.style.width = "80px";
           outDiv.style.cursor = "pointer";
           outDiv.innerHTML = `
-          <p id="deleteNode">删除节点</p>
+          <span id="deleteNode">删除节点</span>
           `;
           return outDiv;
         },
@@ -352,18 +349,17 @@ export default {
       });
 
       this.graph.on("after-edge-selected", (e) => {
-        this.configVisible = !!e;
-
+        // this.configVisible = !!e;
         if (e && e.item) {
           this.config = e.item.get("model").id;
-
-          this.graph.updateItem(e.item, {
-            // shape: 'line-edge',
-            style: {
-              radius: 10,
-              lineWidth: 2,
-            },
-          });
+          this.configVisible = !(e.item._cfg.currentShape === "polyline-edge");
+          // this.graph.updateItem(e.item, {
+          //   // shape: 'line-edge',
+          //   style: {
+          //     radius: 10,
+          //     lineWidth: 2,
+          //   },
+          // });
         }
       });
 

@@ -39,17 +39,17 @@
           <a
             href="javascript:;"
             v-if="dataSource.length"
-            @click.stop="$router.push('/tjgc/detail')"
+            @click.stop="toDetail(record)"
             style="margin-right: 1em"
             >查看</a
           >
-          <a
+          <!-- <a
             href="javascript:;"
             v-if="record.status === 0"
             @click.stop="() => onEdit(record)"
             style="margin-right: 1em"
             >编辑</a
-          >
+          > -->
 
           <a-popconfirm
             v-if="dataSource.length"
@@ -140,6 +140,10 @@ export default {
     },
     showDetail() {
       this.$router.push("/lct/detail");
+    },
+    toDetail(jk) {
+      console.log(jk);
+      this.$router.push({ path: `/tjgc/detail/${jk.key}` }); // -> /user/123
     },
     onEdit() {
       this.$router.push({
@@ -292,46 +296,50 @@ export default {
         {
           key: 1,
           id: 1,
-          title: "XX项目",
+          title: "项目立项论证",
           current: "待提审",
-          description: "这是一个项目",
+          description: "...",
           longitude: 116.397128,
           latitude: 39.916527,
           status: 0,
           l: "项目立项论证",
+          currentFlow: "项目立项论证",
         },
         {
           key: 2,
           id: 2,
-          title: "XX项目",
+          title: "采购招标",
           current: "待审",
-          description: "这是一个项目",
+          description: "...",
           longitude: 116.397128,
           latitude: 39.916527,
           status: 1,
           l: "招标采购",
+          currentFlow: "招标采购",
         },
         {
           key: 3,
           id: 3,
-          title: "XX项目",
+          title: "合同签订",
           current: "通过",
-          description: "这是一个项目",
+          description: "...",
           longitude: 116.397128,
           latitude: 39.916527,
           status: 2,
           l: "合同签订",
+          currentFlow: "合同签订",
         },
         {
           key: 4,
           id: 4,
-          title: "XX项目",
+          title: "资料管理",
           current: "不通过",
-          description: "这是一个项目",
+          description: "...",
           longitude: 116.397128,
           latitude: 39.916527,
           status: 3,
           l: "资料管理",
+          currentFlow: "资料管理",
         },
       ],
       count: 2,
@@ -355,6 +363,10 @@ export default {
         {
           title: "纬度",
           dataIndex: "latitude",
+        },
+        {
+          title: "当前流程",
+          dataIndex: "currentFlow",
         },
         {
           title: "状态",

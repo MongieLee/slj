@@ -5,6 +5,7 @@
         >新增项目</a-button
       >
       <a-table
+        ref="fff"
         size="small"
         :columns="columns2"
         :data-source="data2"
@@ -33,11 +34,12 @@
         </template>
       </a-table>
     </div>
-    <div class="project-content">
-      <F />
+    <!-- <div class="project-content"> -->
+    <router-view :x="currentTreeItem"> </router-view>
+    <!-- <F />
       <File />
-      <Form />
-    </div>
+      <Form /> -->
+    <!-- </div> -->
     <a-modal
       :title="formTitle"
       :visible="visible"
@@ -67,10 +69,6 @@
 </template>
 
 <script>
-import Form from "../../components/projectLibrary/form";
-import File from "../../components/projectLibrary/file";
-import F from "../../components/projectLibrary/first";
-
 const columns2 = [
   {
     title: "库名",
@@ -93,54 +91,94 @@ const columns2 = [
 
 const data2 = [
   {
-    key: 1,
+    key: "qqq",
     title: "项目模板组",
     plan: false,
     children: [
       {
-        key: 11,
+        key: "www",
         title: "土建项目模板",
         plan: false,
         children: [
           {
-            key: Math.random() * 1000,
+            key: 1,
             title: "项目立项论证",
             plan: true,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 2,
             title: "招标采购",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 3,
             title: "合同签订",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 4,
             title: "资料管理",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 5,
             title: "现场管理",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 6,
             title: "安全检查",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 7,
             title: "整改验收",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
           {
-            key: Math.random() * 1000,
+            key: 8,
             title: "后评价",
             plan: false,
+            module: [
+              { key: "form", has: true },
+              { key: "file", has: true },
+              { key: "user", has: true },
+            ],
           },
         ],
       },
@@ -169,7 +207,6 @@ const rowSelection = {
   },
 };
 export default {
-  components: { Form, File, F },
   methods: {
     onDelete() {
       this.$message.success("删除成功");
@@ -221,6 +258,12 @@ export default {
                 item.style.background = "white";
               });
             event.currentTarget.style.background = "#e6f7ff";
+            if (typeof record.key === "number") {
+              this.$router.push({
+                path: `/xmk/${record.key}`,
+              });
+              this.currentTreeItem = record.module;
+            }
           },
         },
       };
@@ -251,6 +294,12 @@ export default {
       editing: false,
     };
   },
+  mounted() {
+    const a = this.$route.fullPath.replace("/xmk/", "");
+    if (a) {
+      this.$refs.fff.$el.querySelector("tbody").children[Number(a) + 1].click();
+    }
+  },
 };
 </script>
 
@@ -259,7 +308,7 @@ export default {
   height: 100%;
   display: flex;
   .tree {
-    width: 400px;
+    width: 350px;
     border-right: 1px solid #ccc;
   }
   .project-content {

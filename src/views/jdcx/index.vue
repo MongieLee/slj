@@ -10,7 +10,7 @@
       <gantt-header :options="headerOptions" slot="header"></gantt-header>
     </gantt-elastic>
     <a-button style="margin-left: 2em" type="primary" @click="addTask"
-      >Add task</a-button
+      >添加数据</a-button
     >
   </div>
 </template>

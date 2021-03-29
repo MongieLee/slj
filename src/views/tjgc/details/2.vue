@@ -1,11 +1,5 @@
 <template>
-  <div class="wrapper">
-    <a-page-header
-      style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
-      title="审核项目"
-      @back="$router.back()"
-    />
-
+  <div class="container1">
     <form>
       <a-form-model
         :model="form1"
@@ -38,11 +32,11 @@
         <a-form-model-item label="购买招标文件时间">
           <a-textarea readOnly v-model="form1.h" />
         </a-form-model-item>
-        <a-form-model-item label="网上报名时间">
-          <a-input readOnly v-model="form1.j" />
-        </a-form-model-item>
         <a-form-model-item label="购买招标文件地点">
           <a-textarea readOnly v-model="form1.i" />
+        </a-form-model-item>
+        <a-form-model-item label="网上报名时间">
+          <a-input readOnly v-model="form1.j" />
         </a-form-model-item>
         <a-form-model-item label="投标截止时间">
           <a-textarea readOnly v-model="form1.k" />
@@ -59,10 +53,10 @@
         <a-form-model-item label="招标人">
           <a-input readOnly v-model="form1.o" />
         </a-form-model-item>
-        <a-form-model-item label="传真">
+        <a-form-model-item label="联系电话">
           <a-input readOnly v-model="form1.p" />
         </a-form-model-item>
-        <a-form-model-item label="联系电话">
+        <a-form-model-item label="传真">
           <a-input readOnly v-model="form1.q" />
         </a-form-model-item>
       </a-form-model>
@@ -137,58 +131,50 @@
         <a-button v-show="currentI !== 2" type="primary" @click="currentI++"
           >下一步<a-icon type="right" />
         </a-button>
-        <a-button
-          v-show="currentI === 2"
-          @click="qq"
-          type="primary"
-          ghost
-          style="margin-left: 2em"
-          >同意</a-button
-        >
-        <a-button
-          v-show="currentI === 2"
-          @click="ww"
-          type="primary"
-          ghost
-          style="margin-left: 2em"
-          >拒绝</a-button
-        >
       </a-button-group>
     </div>
-
     <div class="upload-container">
-      <!-- <p v-if="fileList.length === 0" style="margin-top: 20px">暂无文件</p> -->
-      <h2>文件列表</h2>
-      <div>
-        <div>
-          <h3>混泥土采购项目招标文件(pdf)</h3>
-          <a>这是链接</a>
-        </div>
-        <div>
-          <h3>臭氧催化剂采购项目招标文件(pdf)</h3>
-          <a>这是链接</a>
-        </div>
-      </div>
+      <p v-if="fileList.length === 0" style="margin-top: 20px">暂无文件</p>
     </div>
-
-    <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
-    <rawDisplayer class="col-3" :value="list2" title="List 2" /> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "clone",
-  display: "Clone",
-  order: 2,
   data() {
     return {
-      sss: [
+      list: [
         {
-          title: "混泥土采购项目招标文件",
+          key: "1",
+          title: "项目立项论证",
         },
         {
-          title: "臭氧催化剂采购项目招标文件",
+          key: "2",
+          title: "招标采购",
+        },
+        {
+          key: "3",
+          title: "合同签订",
+        },
+        {
+          key: "4",
+          title: "资料管理",
+        },
+        {
+          key: "5",
+          title: "现场管理",
+        },
+        {
+          key: "6",
+          title: "按权检查",
+        },
+        {
+          key: "7",
+          title: "整改验收",
+        },
+        {
+          key: "8",
+          title: "后评价",
         },
       ],
       form1: {
@@ -240,45 +226,10 @@ export default {
       defaultFileList: [],
     };
   },
-  methods: {
-    handleSubmit() {},
-    ww() {
-      const _this = this;
-      this.$confirm({
-        title: "二次确认",
-        content: () => <div style="color:red;">确定驳回审核吗?</div>,
-        onOk() {
-          _this.$router.push("/tjgc");
-        },
-        onCancel() {
-          console.log("Cancel");
-        },
-        class: "test",
-      });
-    },
-    qq() {
-      const _this = this;
-      this.$confirm({
-        title: "二次确认",
-        content: () => <div style="color:red;">确定通过审核吗?</div>,
-        onOk() {
-          _this.$router.push("/tjgc");
-        },
-        onCancel() {
-          console.log("Cancel");
-        },
-        class: "test",
-      });
-    },
-  },
 };
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  height: 100%;
-  overflow: auto;
-}
 .button-group {
   display: flex;
   justify-content: center;
@@ -287,12 +238,6 @@ export default {
 .upload-container {
   margin-top: 20px;
   border-top: 1px solid #ddd;
-  padding: 20px;
-  > div {
-    display: flex;
-    > div {
-      width: 25%;
-    }
-  }
+  padding: 20px 270px;
 }
 </style>

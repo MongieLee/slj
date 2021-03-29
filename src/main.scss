@@ -456,3 +456,9 @@ textarea {
   resize: none;
   outline: none;
 }
+
+//全局覆盖tabs内容的样式
+.ant-tabs-content.ant-tabs-content-animated.ant-tabs-top-content {
+  flex: 1;
+  overflow: auto;
+}
