@@ -51,7 +51,7 @@ export default {
         },
         {
           key: "6",
-          title: "按权检查",
+          title: "安全检查",
         },
         {
           key: "7",

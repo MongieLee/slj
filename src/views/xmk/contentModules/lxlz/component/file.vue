@@ -6,12 +6,7 @@
         <a-button @click="addFile" type="primary">新增</a-button>
       </div>
     </div>
-    <a-table
-      size="small"
-      bordered
-      :data-source="dataSource"
-      :columns="columns"
-    >
+    <a-table size="small" bordered :data-source="dataSource" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <a
           href="javascript:;"
@@ -27,6 +22,9 @@
         >
           <a style="color: red" href="javascript:;">删除</a>
         </a-popconfirm>
+      </template>
+      <template slot="test" slot-scope="text">
+        <span>{{ text ? "是" : "否" }}</span>
       </template>
     </a-table>
     <a-modal
@@ -59,8 +57,8 @@
               <a-select-option value="png">png</a-select-option>
               <a-select-option value="bmp">bmp</a-select-option>
               <a-select-option value="webp">webp</a-select-option>
-              <a-select-option value="excel">excel</a-select-option>
-              <a-select-option value="word">wrod</a-select-option>
+              <a-select-option value="xls">xls</a-select-option>
+              <a-select-option value="doc">doc</a-select-option>
               <a-select-option value="ppt">ppt</a-select-option>
             </a-select>
           </a-form-model-item>
@@ -210,7 +208,11 @@ export default {
           title: "文件类型",
           dataIndex: "type",
         },
-
+           {
+          title: "是否允许上传多文件",
+          dataIndex: "multiple",
+          scopedSlots: { customRender: "test" },
+        },
         {
           title: "操作",
           scopedSlots: { customRender: "operation" },

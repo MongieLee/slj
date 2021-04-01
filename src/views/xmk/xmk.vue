@@ -103,7 +103,7 @@ const data2 = [
           {
             key: 1,
             title: "项目立项论证",
-            plan: true,
+            plan: false,
             module: [
               { key: "form", has: true },
               { key: "file", has: true },
@@ -153,7 +153,7 @@ const data2 = [
           {
             key: 6,
             title: "安全检查",
-            plan: false,
+            plan: true,
             module: [
               { key: "form", has: true },
               { key: "file", has: true },

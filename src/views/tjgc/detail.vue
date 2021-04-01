@@ -9,19 +9,65 @@
         :tabBarStyle="{ marginBottom: 0 }"
         :default-active-key="heihei ? heihei : 1"
       >
-        <a-tab-pane v-for="i in list" :key="i.key" :tab="`${i.title}`">
-          <!-- <router-view></router-view> -->
+        <a-tab-pane
+          :disabled="i.key === '4'"
+          v-for="i in list"
+          :key="i.key"
+          :tab="`${i.title}`"
+        >
         </a-tab-pane>
       </a-tabs>
-      <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
-    <rawDisplayer class="col-3" :value="list2" title="List 2" /> -->
       <a-page-header
-        style="border: 1px solid rgb(235, 237, 240); margin-bottom: 1em"
+        style="border: 1px solid rgb(235, 237, 240)"
         title="查看项目"
         @back="$router.push('/tjgc')"
-      />
+      >
+        <template v-if="heihei === '6' || heihei === '7'" slot="tags">
+          <a-tag color="blue">当前进度 100%</a-tag>
+        </template>
+        <template v-if="heihei === '1'" slot="tags">
+          <a-tag color="blue"
+            >当前进度 {{ onePlan ? `${onePlan}%` : `0%` }}</a-tag
+          >
+        </template>
+        <template v-if="heihei === '1'" slot="tags">
+          <a-button type="primary" @click="visible = !visible"
+            >填写进度</a-button
+          >
+        </template>
+      </a-page-header>
       <router-view></router-view>
     </div>
+
+    <a-modal
+      title="处理进度"
+      :visible="visible"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <a-form-model
+        ref="ruleForm"
+        :layout="form.layout"
+        :model="form"
+        v-bind="formItemLayout"
+        :rules="rules"
+      >
+        <a-form-model-item label="开始时间" prop="start">
+          <a-date-picker style="width: 100%" v-model="form.start" />
+        </a-form-model-item>
+        <a-form-model-item label="结束时间" prop="end">
+          <a-date-picker style="width: 100%" v-model="form.end" />
+        </a-form-model-item>
+        <a-form-model-item label="进度" prop="plan">
+          <a-input
+            addon-after="%"
+            v-model="form.plan"
+            placeholder="请输入百分比进度"
+          />
+        </a-form-model-item>
+      </a-form-model>
+    </a-modal>
   </div>
 </template>
 
@@ -38,8 +84,49 @@ export default {
     console.log(this.$route.path.substr(this.$route.path.length - 1, 1));
     this.heihei = this.$route.path.substr(this.$route.path.length - 1, 1);
   },
+  computed: {
+    formItemLayout() {
+      const { layout } = this.form;
+      return layout === "horizontal"
+        ? {
+            labelCol: { span: 4 },
+            wrapperCol: { span: 14 },
+          }
+        : {};
+    },
+    buttonItemLayout() {
+      const { layout } = this.form;
+      return layout === "horizontal"
+        ? {
+            wrapperCol: { span: 14, offset: 4 },
+          }
+        : {};
+    },
+  },
   data() {
     return {
+      onePlan: "",
+      rules: {
+        start: [
+          { required: true, message: "请选择开始时间", trigger: "change" },
+        ],
+        end: [
+          {
+            required: true,
+            message: "请选择结束时间",
+            trigger: "change",
+          },
+        ],
+        plan: [{ required: true, message: "请输入进度", trigger: "change" }],
+      },
+      form: {
+        layout: "horizontal",
+        start: "",
+        end: "",
+        plan: "",
+      },
+      confirmLoading: false,
+      visible: false,
       data: getData(),
       heihei: null,
       list: [
@@ -65,7 +152,7 @@ export default {
         },
         {
           key: "6",
-          title: "按权检查",
+          title: "安全检查",
         },
         {
           key: "7",
@@ -113,6 +200,26 @@ export default {
     };
   },
   methods: {
+    onChange() {},
+    handleOk() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          console.log(this.form);
+          // let start = this.form.start.format("YYYY-MM-DD");
+          // let end = this.form.end.format("YYYY-MM-DD");
+          this.visible = !this.visible;
+          this.$message.success("修改成功");
+          this.onePlan = this.form.plan;
+          this.$refs.ruleForm.resetFields();
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    handleCancel() {
+      this.visible = !this.visible;
+    },
     handleSubmit() {},
     tabsChange(e) {
       console.log(e);

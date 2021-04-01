@@ -1,6 +1,6 @@
 <template>
   <div class="container1">
-    <form>
+    <form class="form-wrapper">
       <a-form-model
         :model="form1"
         v-show="currentI === 1"
@@ -104,8 +104,73 @@
         >
       </a-button-group>
     </div>
+
     <div class="upload-container">
-      <p v-if="fileList.length === 0" style="margin-top: 20px">暂无文件</p>
+      <!-- <p v-if="fileList.length === 0" style="margin-top: 20px">暂无文件</p> -->
+      <h2>上传文件列表</h2>
+      <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="单文件列表">
+          <div class="file-item">
+            <span>实施意见</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>取用水方案</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>退水方案</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>水资源利用分析</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>可靠性分析</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>可供水量分析</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>取水分析</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>取水分析</span>
+            <a @click.prevent>退水分析</a>
+          </div>
+        </a-tab-pane>
+      </a-tabs>
+      <!-- <div class="test">
+        <a-list size="small" :data-source="fileList">
+          <a-list-item slot="renderItem" slot-scope="item">
+            <a-list-item-meta :description="item.createAt">
+              <span slot="title">{{ item.fileName }}</span>
+            </a-list-item-meta>
+            <a style="margin-right: 2em" @click.prevent>下載</a>
+          </a-list-item>
+        </a-list>
+      </div> -->
+    </div>
+
+    <div class="auditor">
+      <h2>审核人</h2>
+      <a-list item-layout="horizontal" :data-source="fff">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a-list-item-meta description="待审核">
+            <a slot="title" 
+              >{{ item.title }}（{{ item.dev }}）</a
+            >
+            <a-avatar
+              slot="avatar"
+              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            />
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </div>
   </div>
 </template>
@@ -114,6 +179,30 @@
 export default {
   data() {
     return {
+      fff: [
+        {
+          title: "岳志敏",
+          dev: "技术信息部",
+        },
+        {
+          title: "张亦天",
+          dev: "办公室",
+        },
+        {
+          title: "陈辉",
+          dev: "办公室",
+        },
+      ],
+      fileList: [
+        {
+          fileName: "施工人员考勤记录",
+          createAt: "2020-10-02",
+        },
+        {
+          fileName: "施工人员考勤记录",
+          createAt: "2020-10-04",
+        },
+      ],
       list: [
         {
           key: "1",
@@ -137,7 +226,7 @@ export default {
         },
         {
           key: "6",
-          title: "按权检查",
+          title: "安全检查",
         },
         {
           key: "7",
@@ -180,7 +269,6 @@ export default {
         c: "对野生动物及植物无任何影响",
       },
       currentI: 1,
-      fileList: [],
       defaultFileList: [],
     };
   },
@@ -192,10 +280,38 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 1em;
 }
+
 .upload-container {
-  margin-top: 20px;
   border-top: 1px solid #ddd;
-  padding: 20px 270px;
+  padding: 20px;
+  ::v-deep .ant-tabs-tabpane.ant-tabs-tabpane-active {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .file-item {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.file-item {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.auditor {
+  border-top: 1px solid #ddd;
+  padding: 20px;
+}
+
+.test {
+  max-height: 300px;
+  overflow: auto;
 }
 </style>

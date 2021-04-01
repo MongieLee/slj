@@ -158,17 +158,36 @@
 
     <div class="upload-container">
       <!-- <p v-if="fileList.length === 0" style="margin-top: 20px">暂无文件</p> -->
-      <h2>文件列表</h2>
-      <div>
-        <div>
-          <h3>混泥土采购项目招标文件(pdf)</h3>
-          <a>这是链接</a>
-        </div>
-        <div>
-          <h3>臭氧催化剂采购项目招标文件(pdf)</h3>
-          <a>这是链接</a>
-        </div>
-      </div>
+      <h2>上传文件列表</h2>
+      <a-tabs default-active-key="1">
+        <a-tab-pane key="1" tab="单文件列表">
+          <div class="file-item">
+            <span>混泥土采购项目</span>
+            <a @click.prevent>下载</a>
+          </div>
+          <div class="file-item">
+            <span>臭氧催化剂采购项目</span>
+            <a @click.prevent>下载</a>
+          </div>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
+
+    <div class="auditor">
+      <h2>审核人</h2>
+      <a-list item-layout="horizontal" :data-source="fff">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a-list-item-meta description="待审核">
+            <a slot="title" 
+              >{{ item.title }}（办公室）</a
+            >
+            <a-avatar
+              slot="avatar"
+              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            />
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </div>
 
     <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
@@ -183,6 +202,14 @@ export default {
   order: 2,
   data() {
     return {
+      fff: [
+        {
+          title: "张志勇",
+        },
+        {
+          title: "岳志明",
+        },
+      ],
       sss: [
         {
           title: "混泥土采购项目招标文件",
@@ -285,14 +312,25 @@ export default {
   align-items: center;
 }
 .upload-container {
-  margin-top: 20px;
   border-top: 1px solid #ddd;
   padding: 20px;
-  > div {
+  ::v-deep .ant-tabs-tabpane.ant-tabs-tabpane-active {
     display: flex;
-    > div {
-      width: 25%;
-    }
+    flex-wrap: wrap;
   }
+  .file-item {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.auditor {
+  border-top: 1px solid #ddd;
+  padding: 20px;
+  /* ::v-deep .ant-list.ant-list-split {
+    width: 300px;
+  } */
 }
 </style>

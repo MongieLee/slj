@@ -59,8 +59,8 @@
               <a-select-option value="png">png</a-select-option>
               <a-select-option value="bmp">bmp</a-select-option>
               <a-select-option value="webp">webp</a-select-option>
-              <a-select-option value="excel">excel</a-select-option>
-              <a-select-option value="word">wrod</a-select-option>
+              <a-select-option value="xls">xls</a-select-option>
+              <a-select-option value="doc">doc</a-select-option>
               <a-select-option value="ppt">ppt</a-select-option>
             </a-select>
           </a-form-model-item>
